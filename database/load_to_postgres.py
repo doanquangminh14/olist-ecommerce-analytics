@@ -1,46 +1,68 @@
-import pandas as pd
-from sqlalchemy import create_engine
-from dotenv import load_dotenv
-
 import os
+import sys
+from pathlib import Path
+import pandas as pd
 
-load_dotenv()
+# Thêm thư mục hiện tại vào sys.path để import connect_db
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
 
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
+from connect_db import get_engine
 
-engine = create_engine(
-    f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-)
+# Danh sách 9 bảng và đường dẫn file sạch tương ứng theo đúng thứ tự phụ thuộc khóa ngoại (FK)
+CLEAN_DATA_DIR = BASE_DIR / "data" / "clean"
 
-
-files = {
-    "customers": "data/clean/customers_clean.csv",
-    "sellers": "data/clean/sellers_clean.csv",
-    "products": "data/clean/products_clean.csv",
-    "category_translation": "data/clean/category_translation_clean.csv",
-    "orders": "data/clean/orders_clean.csv",
-    "payments": "data/clean/payments_clean.csv",
-    "reviews": "data/clean/reviews_clean.csv",
-    "geolocation": "data/clean/geolocation_clean.csv",
-    "order_items": "data/clean/order_items_clean.csv"
+TABLE_FILES = {
+    "category_translation": CLEAN_DATA_DIR / "category_translation_clean.csv",
+    "products": CLEAN_DATA_DIR / "products_clean.csv",
+    "customers": CLEAN_DATA_DIR / "customers_clean.csv",
+    "sellers": CLEAN_DATA_DIR / "sellers_clean.csv",
+    "orders": CLEAN_DATA_DIR / "orders_clean.csv",
+    "order_items": CLEAN_DATA_DIR / "order_items_clean.csv",
+    "payments": CLEAN_DATA_DIR / "payments_clean.csv",
+    "reviews": CLEAN_DATA_DIR / "reviews_clean.csv",
+    "geolocation": CLEAN_DATA_DIR / "geolocation_clean.csv",
 }
 
 
-for table_name, file_path in files.items():
-    print(f"Loading {table_name}...")
-    df = pd.read_csv(file_path)
-    df.to_sql(
-        name=table_name,
-        con=engine,
-        if_exists="append",
-        index=False,
-        method="multi"
-    )
+def load_staging_tables(truncate_first: bool = False):
+    """
+    Nạp dữ liệu từ data/clean/*.csv vào schema 'staging' trong PostgreSQL.
+    """
+    engine = get_engine()
+    print("=" * 70)
+    print("BẮT ĐẦU NẠP DỮ LIỆU SẠCH VÀO SCHEMA 'STAGING' TRONG POSTGRESQL")
+    print("=" * 70)
 
-    print(f"{table_name} loaded successfully")
+    for table_name, file_path in TABLE_FILES.items():
+        if not file_path.exists():
+            print(f" [CẢNH BÁO] Không tìm thấy file: {file_path}")
+            continue
 
-print("All tables loaded successfully!")
+        print(f"\n Đang đọc và nạp bảng 'staging.{table_name}'...")
+        df = pd.read_csv(file_path)
+
+        # Chế độ nạp: 'append' hoặc truncate trước nếu muốn làm mới
+        if_exists_mode = "append"
+
+        df.to_sql(
+            name=table_name,
+            con=engine,
+            schema="staging",
+            if_exists=if_exists_mode,
+            index=False,
+            chunksize=10000,
+            method="multi",
+        )
+
+        print(f"✅ Đã nạp thành công '{table_name}': {len(df):,d} dòng vào staging.{table_name}")
+
+    print("\n" + "=" * 70)
+    print(" TẤT CẢ 9 BẢNG ĐÃ ĐƯỢC NẠP THÀNH CÔNG VÀO SCHEMA 'STAGING'!")
+    print("=" * 70)
+
+
+if __name__ == "__main__":
+    load_staging_tables()

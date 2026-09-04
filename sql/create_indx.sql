@@ -1,37 +1,65 @@
 -- ============================================
--- INDEXES
+-- INDEXES FOR STAGING TABLES
+-- High Performance Query Optimization & Join Acceleration
 -- ============================================
 
-CREATE INDEX idx_orders_customer
-ON orders(customer_id);
+SET search_path TO staging;
 
-CREATE INDEX idx_orders_purchase_date
-ON orders(order_purchase_timestamp);
+-- Orders Indexes
+CREATE INDEX IF NOT EXISTS idx_orders_customer
+ON staging.orders(customer_id);
 
-CREATE INDEX idx_order_items_order
-ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_orders_purchase_date
+ON staging.orders(order_purchase_timestamp);
 
-CREATE INDEX idx_order_items_product
-ON order_items(product_id);
+CREATE INDEX IF NOT EXISTS idx_orders_status
+ON staging.orders(order_status);
 
-CREATE INDEX idx_order_items_seller
-ON order_items(seller_id);
+-- Order Items Indexes
+CREATE INDEX IF NOT EXISTS idx_order_items_order
+ON staging.order_items(order_id);
 
-CREATE INDEX idx_reviews_order
-ON reviews(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_product
+ON staging.order_items(product_id);
 
-CREATE INDEX idx_payments_order
-ON payments(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_seller
+ON staging.order_items(seller_id);
 
-CREATE INDEX idx_products_category
-ON products(product_category_name);
+-- Reviews Indexes
+CREATE INDEX IF NOT EXISTS idx_reviews_order
+ON staging.reviews(order_id);
 
-CREATE INDEX idx_customer_state
-ON customers(customer_state);
+CREATE INDEX IF NOT EXISTS idx_reviews_score
+ON staging.reviews(review_score);
 
-CREATE INDEX idx_seller_state
-ON sellers(seller_state);
+-- Payments Indexes
+CREATE INDEX IF NOT EXISTS idx_payments_order
+ON staging.payments(order_id);
 
-CREATE INDEX idx_geo_zip
-ON geolocation(geolocation_zip_code_prefix);
+CREATE INDEX IF NOT EXISTS idx_payments_type
+ON staging.payments(payment_type);
 
+-- Products Indexes
+CREATE INDEX IF NOT EXISTS idx_products_category
+ON staging.products(product_category_name);
+
+-- Customers Indexes
+CREATE INDEX IF NOT EXISTS idx_customers_unique_id
+ON staging.customers(customer_unique_id);
+
+CREATE INDEX IF NOT EXISTS idx_customer_state
+ON staging.customers(customer_state);
+
+CREATE INDEX IF NOT EXISTS idx_customer_zip
+ON staging.customers(customer_zip_code_prefix);
+
+-- Sellers Indexes
+CREATE INDEX IF NOT EXISTS idx_seller_state
+ON staging.sellers(seller_state);
+
+CREATE INDEX IF NOT EXISTS idx_seller_zip
+ON staging.sellers(seller_zip_code_prefix);
+
+-- Geolocation Indexes
+CREATE INDEX IF NOT EXISTS idx_geo_zip
+ON staging.geolocation(geolocation_zip_code_prefix);
