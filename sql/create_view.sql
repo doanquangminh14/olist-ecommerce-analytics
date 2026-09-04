@@ -134,7 +134,7 @@ LEFT JOIN category_translation ct
 
 
 -- ============================================
--- View tổng hợp cho Power BI
+-- View tổng hợp 
 -- ============================================
 CREATE OR REPLACE VIEW vw_sales_full AS
 SELECT

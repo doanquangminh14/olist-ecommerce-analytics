@@ -35,14 +35,3 @@ ON sellers(seller_state);
 CREATE INDEX idx_geo_zip
 ON geolocation(geolocation_zip_code_prefix);
 
-CREATE INDEX idx_hotel_country
-ON hotel_bookings(country);
-
-CREATE INDEX idx_hotel_arrival_year
-ON hotel_bookings(arrival_date_year);
-
-CREATE INDEX idx_hotel_arrival_month
-ON hotel_bookings(arrival_date_month);
-
-CREATE INDEX idx_hotel_cancel
-ON hotel_bookings(is_canceled);

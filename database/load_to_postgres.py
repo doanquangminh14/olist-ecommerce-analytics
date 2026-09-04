@@ -1,5 +1,4 @@
 import pandas as pd
-
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
@@ -33,11 +32,8 @@ files = {
 
 
 for table_name, file_path in files.items():
-
     print(f"Loading {table_name}...")
-
     df = pd.read_csv(file_path)
-
     df.to_sql(
         name=table_name,
         con=engine,
