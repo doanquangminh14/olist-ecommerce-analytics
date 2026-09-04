@@ -26,7 +26,6 @@ files = {
     "payments": "data/clean/payments_clean.csv",
     "reviews": "data/clean/reviews_clean.csv",
     "geolocation": "data/clean/geolocation_clean.csv",
-    "hotel_bookings": "data/clean/hotel_bookings_clean.csv",
     "order_items": "data/clean/order_items_clean.csv"
 }
 

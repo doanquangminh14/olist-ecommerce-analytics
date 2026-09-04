@@ -16,7 +16,7 @@ CREATE TABLE customers (
     customer_unique_id VARCHAR(50),
     customer_zip_code_prefix INT,
     customer_city VARCHAR(100),
-    customer_state VARCHAR(10)
+    customer_state VARCHAR(50)
 );
 
 -- ============================================
@@ -27,7 +27,7 @@ CREATE TABLE sellers (
     seller_id VARCHAR(50) PRIMARY KEY,
     seller_zip_code_prefix INT,
     seller_city VARCHAR(100),
-    seller_state VARCHAR(10)
+    seller_state VARCHAR(50)
 );
 
 -- ============================================
@@ -161,6 +161,6 @@ CREATE TABLE geolocation (
     geolocation_lat NUMERIC(12,8),
     geolocation_lng NUMERIC(12,8),
     geolocation_city VARCHAR(100),
-    geolocation_state VARCHAR(10)
+    geolocation_state VARCHAR(50)
 );
 
