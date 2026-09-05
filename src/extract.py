@@ -11,7 +11,10 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from .config import RAW_DATA_DIR, RAW_FILES
+try:
+    from .config import RAW_DATA_DIR, RAW_FILES
+except ImportError:
+    from config import RAW_DATA_DIR, RAW_FILES
 
 
 def extract_raw_data(raw_dir: Path = RAW_DATA_DIR) -> Dict[str, pd.DataFrame]:

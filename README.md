@@ -148,12 +148,30 @@ Các tệp Jupyter Notebook đóng vai trò là không gian thử nghiệm, tìm
 
 ## 🗄 Mô hình dữ liệu (Data Modeling & Database Design)
 
+### 1. Kiến trúc Star Schema (`analytics`)
+Mô hình dữ liệu phân tích được thiết kế theo chuẩn **Kimball Star Schema** trong schema `analytics` (xây dựng từ [`sql/create_view.sql`](sql/create_view.sql)), tối ưu hóa cho truy vấn báo cáo và Power BI:
+
+```mermaid
+graph TD
+    classDef fact fill:#ff9966,stroke:#b34700,stroke-width:2px,color:#000,font-weight:bold;
+    classDef dim fill:#5dade2,stroke:#1b4f72,stroke-width:1.5px,color:#000,font-weight:bold;
+
+    dim_date["📅 dim_date"]:::dim -->|purchase_date_key| fact_order_items["⭐ fact_order_items (Central Fact)"]:::fact
+    dim_customers["👤 dim_customers"]:::dim -->|customer_id| fact_order_items
+    dim_sellers["🏬 dim_sellers"]:::dim -->|seller_id| fact_order_items
+    dim_products["📦 dim_products"]:::dim -->|product_id| fact_order_items
+
+    fact_order_items -.->|order_id| fact_payments["💳 fact_payments"]:::fact
+    fact_order_items -.->|order_id| fact_reviews["⭐ fact_reviews"]:::fact
+```
+
+### 2. Chi tiết các tầng dữ liệu
 - **Schema `staging`**: Lưu trữ 9 bảng sạch nguyên bản với đầy đủ Primary Key, Foreign Key và chỉ mục B-Tree:
   - `customers`, `sellers`, `products`, `category_translation`, `orders`, `order_items`, `payments`, `reviews`, `geolocation`.
 - **Schema `analytics` (Star Schema)**:
   - **Dimension Views**: `dim_customers`, `dim_sellers`, `dim_products`, `dim_geolocation`, `dim_date`.
   - **Fact Views**: `fact_order_items`, `fact_payments`, `fact_reviews`.
-  - **Master View (`vw_sales_master`)**: Dạng One Big Table (OBT) tối ưu hóa truy vấn nhanh cho Power BI.
+  - **Master View (`vw_sales_master`)**: Dạng One Big Table (OBT) kết hợp đầy đủ thông tin đơn hàng, khách hàng, người bán, đánh giá nhằm tối ưu hóa truy vấn nhanh cho Power BI.
 
 ---
 

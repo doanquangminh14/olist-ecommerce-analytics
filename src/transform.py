@@ -10,14 +10,24 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from .config import (
-    BRAZIL_STATES_MAP,
-    ADDITIONAL_TRANSLATIONS,
-    GEO_LAT_MIN,
-    GEO_LAT_MAX,
-    GEO_LNG_MIN,
-    GEO_LNG_MAX,
-)
+try:
+    from .config import (
+        BRAZIL_STATES_MAP,
+        ADDITIONAL_TRANSLATIONS,
+        GEO_LAT_MIN,
+        GEO_LAT_MAX,
+        GEO_LNG_MIN,
+        GEO_LNG_MAX,
+    )
+except ImportError:
+    from config import (
+        BRAZIL_STATES_MAP,
+        ADDITIONAL_TRANSLATIONS,
+        GEO_LAT_MIN,
+        GEO_LAT_MAX,
+        GEO_LNG_MIN,
+        GEO_LNG_MAX,
+    )
 
 
 def clean_orders(df: pd.DataFrame) -> pd.DataFrame:

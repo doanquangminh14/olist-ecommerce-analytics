@@ -13,8 +13,12 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from .config import CLEAN_DATA_DIR, CLEAN_FILES, TABLE_LOAD_ORDER
-from .db import get_engine
+try:
+    from .config import CLEAN_DATA_DIR, CLEAN_FILES, TABLE_LOAD_ORDER
+    from .db import get_engine
+except ImportError:
+    from config import CLEAN_DATA_DIR, CLEAN_FILES, TABLE_LOAD_ORDER
+    from db import get_engine
 
 
 def save_clean_csv(

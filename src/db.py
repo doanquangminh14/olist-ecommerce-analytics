@@ -11,7 +11,10 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from .config import DATABASE_URL, SQL_DIR
+try:
+    from .config import DATABASE_URL, SQL_DIR
+except ImportError:
+    from config import DATABASE_URL, SQL_DIR
 
 
 _engine: Optional[Engine] = None
