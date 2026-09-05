@@ -1,6 +1,12 @@
 # 🛒 Olist Brazilian E-Commerce Analytics & Machine Learning Pipeline
 
-Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Warehousing) trên bộ dữ liệu thương mại điện tử **Olist (Brazil)** gồm hơn 100.000 đơn hàng từ năm 2016 đến 2018. Dự án bao gồm toàn bộ quy trình từ khám phá dữ liệu thô, xây dựng pipeline làm sạch (ETL/ELT), thiết kế Data Warehouse theo mô hình Star Schema trên PostgreSQL, phân tích chuyên sâu (EDA), xây dựng mô hình Machine Learning dự đoán giao hàng trễ, đến trực quan hóa báo cáo trên Power BI.
+Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Warehousing) trên bộ dữ liệu thương mại điện tử **Olist (Brazil)** gồm hơn 100.000 đơn hàng từ năm 2016 đến 2018. 
+
+Dự án được phân tách rõ ràng theo chuẩn công nghiệp:
+- **`src/`**: Pipeline ETL (Extract - Transform - Load) dạng module hóa trong Python, tự động hóa toàn bộ quá trình làm sạch dữ liệu, kiểm tra ràng buộc toàn vẹn và nạp vào PostgreSQL.
+- **`notebook/`**: Dành riêng cho nghiên cứu thăm dò (Exploratory Data Analysis - EDA), kiểm chứng các giả thuyết kinh doanh và thử nghiệm mô hình Machine Learning.
+- **`sql/`**: Data Warehouse kiến trúc Star Schema (Dimension, Fact, Master Views) tối ưu chỉ mục B-Tree trên PostgreSQL.
+- **`power_bi/` & `report/`**: Trực quan hóa báo cáo phân tích và theo dõi các chỉ số KPI.
 
 ---
 
@@ -9,14 +15,10 @@ Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Wareh
 2. [Kiến trúc luồng xử lý (Architecture)](#-kiến-trúc-luồng-xử-lý-architecture)
 3. [Cấu trúc thư mục (Project Structure)](#-cấu-trúc-thư-mục-project-structure)
 4. [Mô hình dữ liệu (Data Modeling & Database Design)](#-mô-hình-dữ-liệu-data-modeling--database-design)
-5. [Chi tiết các giai đoạn thực hiện (Pipeline Details)](#-chi-tiết-các-giai-đoạn-thực-hiện-pipeline-details)
-   - [Giai đoạn 1: Khám phá & Làm sạch dữ liệu](#1-khám-phá--làm-sạch-dữ-liệu-eda--data-cleaning)
-   - [Giai đoạn 2: Cơ sở dữ liệu & Tối ưu hóa truy vấn](#2-cơ-sở-dữ-liệu--tối-ưu-hóa-truy-vấn-postgresql)
-   - [Giai đoạn 3: Phân tích chuyên sâu (EDA & Business Insights)](#3-phân-tích-chuyên-sâu-eda--business-insights)
-   - [Giai đoạn 4: Xây dựng mô hình Machine Learning](#4-xây-dựng-mô-hình-machine-learning)
-   - [Giai đoạn 5: Trực quan hóa & Báo cáo BI](#5-trực-quan-hóa--báo-cáo-bi-power-bi)
-6. [Công nghệ & Thư viện sử dụng (Tech Stack)](#-công-nghệ--thư-viện-sử-dụng-tech-stack)
-7. [Hướng dẫn cài đặt & Chạy dự án (Getting Started)](#-hướng-dẫn-cài-đặt--chạy-dự-án-getting-started)
+5. [Pipeline ETL trong `src/`](#-pipeline-etl-trong-src)
+6. [Khu vực Nghiên cứu & Giả thuyết trong `notebook/`](#-khu-vực-nghiên-cứu--giả-thuyết-trong-notebook)
+7. [Công nghệ & Thư viện sử dụng (Tech Stack)](#-công-nghệ--thư-viện-sử-dụng-tech-stack)
+8. [Hướng dẫn cài đặt & Chạy dự án (Getting Started)](#-hướng-dẫn-cài-đặt--chạy-dự-án-getting-started)
 
 ---
 
@@ -24,10 +26,10 @@ Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Wareh
 
 - **Bộ dữ liệu**: Brazilian E-Commerce Public Dataset by Olist (9 bảng dữ liệu quan hệ: Đơn hàng, Khách hàng, Người bán, Sản phẩm, Đánh giá, Thanh toán, Danh mục, Tọa độ địa lý).
 - **Mục tiêu**:
-  - Xây dựng quy trình xử lý dữ liệu chuẩn hóa, tự động hóa việc làm sạch và nạp vào CSDL PostgreSQL.
-  - Thiết kế kiến trúc kho dữ liệu phân lớp (`staging` và `analytics`) phục vụ báo cáo đa chiều.
-  - Khai phá các insight quan trọng về doanh thu, hành vi khách hàng, hiệu suất logistics và trải nghiệm người dùng.
-  - Xây dựng mô hình phân loại dự đoán rủi ro giao hàng trễ (*Late Delivery Prediction*) nhằm tối ưu chuỗi cung ứng.
+  - Tự động hóa pipeline ETL làm sạch và nạp 9 tập dữ liệu sạch vào CSDL PostgreSQL một cách nhất quán.
+  - Xây dựng kho dữ liệu phân lớp (`staging` và `analytics`) phục vụ báo cáo đa chiều.
+  - Phân tích khám phá và kiểm chứng các giả thuyết về doanh thu, logistics và độ hài lòng của khách hàng.
+  - Dự đoán đơn hàng có nguy cơ giao trễ bằng thuật toán Random Forest.
 
 ---
 
@@ -35,17 +37,25 @@ Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Wareh
 
 ```mermaid
 flowchart TD
-    A[Raw Data / CSVs] -->|Data Cleaning & Validation| B[Clean Data / CSVs]
-    B -->|Python Loader Script| C[(PostgreSQL: staging schema)]
-    C -->|Indexing Optimization| C
-    C -->|SQL Views / Star Schema| D[(PostgreSQL: analytics schema)]
-    
-    D -->|Dim & Fact Views| E[Power BI Dashboards]
-    D -->|Data Analysis| F[Jupyter Notebooks: EDA]
-    D -->|Feature Engineering| G[Machine Learning: Random Forest]
-    
-    F --> H[Visual Reports / PNGs]
-    G --> H
+    subgraph S1 [1. Production ETL Pipeline]
+        Raw[Raw Data / CSVs] -->|src/extract.py| Ext[In-Memory DataFrames]
+        Ext -->|src/transform.py| Clean[Cleaned & Validated Data]
+        Clean -->|src/load.py| CleanCSV[data/clean/*.csv]
+        Clean -->|src/load.py & src/db.py| Staging[(PostgreSQL: staging)]
+    end
+
+    subgraph S2 [2. Data Warehouse Layer]
+        Staging -->|sql/create_indx.sql| IndexedStaging[Optimized Staging Tables]
+        IndexedStaging -->|sql/create_view.sql| AnalyticsDW[(PostgreSQL: analytics Star Schema)]
+    end
+
+    subgraph S3 [3. Analytics & Hypothesis Testing]
+        CleanCSV -.-> Notebooks[notebook/: EDA & Hypotheses]
+        AnalyticsDW --> PowerBI[Power BI Dashboards]
+        CleanCSV --> ML[notebook/ml.ipynb: Random Forest]
+        Notebooks --> Reports[report/: Visual Insights]
+        ML --> Reports
+    end
 ```
 
 ---
@@ -55,193 +65,176 @@ flowchart TD
 ```text
 olist-ecommerce-analytics/
 │
-├── data/                       # Thư mục chứa dữ liệu
-│   ├── raw/                    # Dữ liệu gốc 9 bảng CSV từ Olist
-│   └── clean/                  # Dữ liệu sau khi làm sạch & chuẩn hóa
+├── main.py                     # Điểm chạy chính (Entrypoint) cho toàn bộ Pipeline ETL
+├── requirements.txt            # Danh sách các thư viện Python phụ thuộc
+├── .env                        # Cấu hình biến môi trường kết nối Database (Host, Port, User, Password)
+├── README.md                   # Tài liệu chi tiết về dự án
 │
-├── database/                   # Scripts kết nối và nạp dữ liệu vào Database
-│   ├── connect_db.py           # Module tạo engine kết nối PostgreSQL qua SQLAlchemy
-│   └── load_to_postgres.py     # Script ETL nạp tự động dữ liệu clean vào schema 'staging'
+├── data/                       # Thư mục dữ liệu
+│   ├── raw/                    # 9 tệp dữ liệu thô gốc từ Olist
+│   └── clean/                  # 9 tệp dữ liệu sau khi được pipeline xử lý sạch
 │
-├── sql/                        # Các tệp kịch bản SQL định nghĩa CSDL
+├── src/                        # ⚡ CORE ETL ENGINE (Production Pipeline)
+│   ├── __init__.py             # Khởi tạo package và cấu hình UTF-8 console
+│   ├── config.py               # Thiết lập đường dẫn, ánh xạ 27 bang, cấu hình DB
+│   ├── extract.py              # Đọc dữ liệu thô từ data/raw/
+│   ├── transform.py            # Tiền xử lý, chuẩn hóa, lọc dị biệt & kiểm tra toàn vẹn (FK)
+│   ├── load.py                 # Lưu trữ data/clean/ & nạp vào PostgreSQL schema staging
+│   ├── db.py                   # Quản lý kết nối DB, kiểm thử & thực thi DDL/Views SQL
+│   └── pipeline.py             # Điều phối (Orchestrator) toàn bộ luồng ETL kèm CLI flags
+│
+├── database/                   # Scripts hỗ trợ thao tác CSDL phụ trợ
+│   ├── connect_db.py           # Module kết nối cơ sở dữ liệu
+│   └── load_to_postgres.py     # Script nạp dữ liệu độc lập
+│
+├── sql/                        # Kịch bản SQL định nghĩa Data Warehouse
 │   ├── create_db.sql           # DDL tạo schema staging, 9 bảng quan hệ & Foreign Keys
 │   ├── create_indx.sql         # Tạo chỉ mục B-Tree tối ưu hóa hiệu năng truy vấn
-│   └── create_view.sql         # Tạo mô hình Star Schema (Dim, Fact) & Master View trong schema analytics
+│   └── create_view.sql         # Tạo mô hình Star Schema (Dim, Fact) & Master View
 │
-├── notebook/                   # Jupyter Notebooks nghiên cứu, phân tích & mô hình hóa
-│   ├── undertand_data.ipynb    # Khám phá cấu trúc, schema và đặc tính dữ liệu thô
-│   ├── cleaning_data.ipynb     # Pipeline tiền xử lý, điền khuyết thiếu, chuẩn hóa mã bang, tọa độ
-│   ├── eda_123.ipynb           # EDA Phần 1: Doanh thu, Xu hướng thời gian, Phân tích Pareto, Outliers
-│   ├── eda_456.ipynb           # EDA Phần 2: Logistics/Vận chuyển, Điểm đánh giá Review & Trải nghiệm
-│   └── ml.ipynb                # Huấn luyện mô hình Random Forest dự đoán đơn hàng giao trễ
+├── notebook/                   # 🔬 NGHIÊN CỨU & KIỂM CHỨNG GIẢ THUYẾT (Jupyter)
+│   ├── undertand_data.ipynb    # Khám phá cấu trúc, phân bố và các vấn đề của dữ liệu thô
+│   ├── cleaning_data.ipynb     # Notebook thử nghiệm các bước tiền xử lý trước khi đóng gói vào src/
+│   ├── eda_123.ipynb           # Kiểm chứng giả thuyết về Doanh thu, Xu hướng thời gian, Pareto 80/20
+│   ├── eda_456.ipynb           # Kiểm chứng giả thuyết về Vận chuyển/Logistics & Điểm đánh giá Review
+│   └── ml.ipynb                # Thử nghiệm mô hình Machine Learning dự đoán giao hàng trễ
 │
-├── power_bi/                   # Tài nguyên phục vụ Business Intelligence
-│   └── dax.md                  # Tài liệu định nghĩa các công thức DAX Measures cho Power BI
+├── power_bi/                   # Tài nguyên Power BI
+│   └── dax.md                  # Tài liệu định nghĩa các công thức DAX Measures
 │
-├── report/                     # Hình ảnh biểu đồ trích xuất từ EDA & Machine Learning
-│   ├── monthly_revenue_trend.png
-│   ├── pareto_analysis.png
-│   ├── Late Delivery Percentage.png
-│   ├── rf_roc_curve.png
-│   ├── rf_top15_feature_importance.png
-│   └── ... (22 biểu đồ chất lượng cao)
-│
-├── src/                        # Mã nguồn tái sử dụng (helpers / utils)
-├── .env                        # Cấu hình biến môi trường kết nối Database (Host, Port, User, Password)
-├── .gitignore                  # Cấu hình bỏ qua tệp nhị phân / dữ liệu lớn / cấu hình nhạy cảm
-├── requirements.txt            # Danh sách các thư viện Python phụ thuộc
-└── README.md                   # Tài liệu hướng dẫn & giải thích dự án
+└── report/                     # Hình ảnh biểu đồ trích xuất từ EDA & Machine Learning (22 biểu đồ)
 ```
+
+---
+
+## ⚡ Pipeline ETL trong `src/`
+
+Pipeline được thiết kế theo nguyên lý mô-đun hóa cao (High Cohesion, Loose Coupling):
+
+1. **`extract.py`**:
+   - Quét và nạp toàn bộ 9 tệp dữ liệu thô từ `data/raw/` vào bộ nhớ.
+2. **`transform.py`**:
+   - Chuẩn hóa kiểu ngày giờ `datetime64[ns]` trên toàn bộ các cột thời gian.
+   - Xử lý các giá trị khuyết thiếu (`reviews`, `products`).
+   - Xử lý bất thường thanh toán (loại bỏ `payment_type = 'not_defined'`, chuẩn hóa kỳ trả góp).
+   - Đồng bộ danh mục dịch thuật tiếng Anh (`category_translation`).
+   - Chuyển đổi mã 27 bang viết tắt sang tên đầy đủ (`SP` $\to$ `São Paulo`).
+   - Khử trùng lặp và loại bỏ tọa độ ngoại lai ngoài lãnh thổ Brazil (`geolocation`).
+   - **Tự động kiểm tra ràng buộc toàn vẹn tham chiếu (Foreign Key Integrity)**: Đảm bảo 100% không có bản ghi mồ côi (*orphan records*) giữa các bảng liên kết.
+3. **`load.py`**:
+   - Xuất dữ liệu sạch ra thư mục `data/clean/*.csv`.
+   - Nạp tuần tự 9 bảng vào schema `staging` của PostgreSQL theo đúng thứ tự phụ thuộc khóa ngoại.
+4. **`db.py`**:
+   - Cung cấp engine SQLAlchemy, kiểm tra kết nối và thực thi các tệp DDL/Views SQL.
+5. **`pipeline.py` / `main.py`**:
+   - Điểm kích hoạt toàn bộ luồng với các tùy chọn dòng lệnh linh hoạt.
+
+---
+
+## 🔬 Khu vực Nghiên cứu & Giả thuyết trong `notebook/`
+
+Các tệp Jupyter Notebook đóng vai trò là không gian thử nghiệm, tìm hiểu và kiểm chứng các giả thuyết kinh doanh:
+
+- **Giả thuyết Doanh thu & Danh mục ([`eda_123.ipynb`](notebook/eda_123.ipynb))**:
+  - *Giả thuyết*: Doanh số Olist tăng trưởng theo chu kỳ mùa vụ và tuân theo nguyên lý Pareto 80/20.
+  - *Kết quả*: Doanh thu đạt đỉnh vào tháng 11 (Black Friday) và quý 1-2 năm 2018; khoảng 20% danh mục đem lại phần lớn doanh thu.
+- **Giả thuyết Logistics & Trải nghiệm ([`eda_456.ipynb`](notebook/eda_456.ipynb))**:
+  - *Giả thuyết*: Thời gian giao hàng chậm trễ so với ngày dự kiến là nguyên nhân chính dẫn đến đánh giá 1 sao.
+  - *Kết quả*: Tỷ lệ đánh giá tiêu cực (1-2 sao) tăng vọt khi đơn hàng giao trễ (`is_delayed = 1`).
+- **Mô hình Dự đoán ([`ml.ipynb`](notebook/ml.ipynb))**:
+  - Xây dựng mô hình Random Forest Classifier để phát hiện sớm các đơn hàng có nguy cơ bị giao trễ nhằm kích hoạt cảnh báo chuỗi cung ứng.
 
 ---
 
 ## 🗄 Mô hình dữ liệu (Data Modeling & Database Design)
 
-Hệ thống cơ sở dữ liệu được chia làm 2 tầng (Schemas):
-
-### 1. Schema `staging` (Tầng dữ liệu nền tảng đã làm sạch)
-Chứa 9 bảng quan hệ toàn vẹn có đầy đủ Primary Key và Foreign Key:
-- `customers`: Thông tin khách hàng (`customer_id`, `customer_unique_id`, zip code, thành phố, bang).
-- `sellers`: Thông tin người bán đối tác.
-- `products`: Thông tin sản phẩm (kích thước, trọng lượng, số ảnh, danh mục).
-- `category_translation`: Bảng tra cứu dịch tên danh mục từ tiếng Bồ Đào Nha sang tiếng Anh.
-- `orders`: Thông tin đơn hàng và các mốc thời gian (đặt hàng, duyệt, xuất kho, giao thực tế, ước tính).
-- `order_items`: Chi tiết từng sản phẩm trong đơn, giá tiền và phí vận chuyển.
-- `payments`: Phương thức thanh toán, số kỳ trả góp và giá trị thanh toán.
-- `reviews`: Điểm đánh giá (1-5 sao), tiêu đề, nội dung nhận xét và thời gian phản hồi.
-- `geolocation`: Dữ liệu tọa độ vĩ độ/kinh độ chuẩn hóa theo mã Zip Code.
-
-### 2. Schema `analytics` (Mô hình Star Schema & Views)
-Phục vụ phân tích đa chiều và kết nối trực tiếp vào Power BI:
-- **Dimension Views**:
-  - `dim_customers`: Chiều khách hàng.
-  - `dim_sellers`: Chiều người bán.
-  - `dim_products`: Chiều sản phẩm kèm tên tiếng Anh và thể tích khối (`product_volume_cm3`).
-  - `dim_geolocation`: Tọa độ trung bình gộp theo Zip Code / Bang.
-  - `dim_date`: Bảng thời gian (Time Intelligence: Ngày, Tuần, Tháng, Quý, Năm, Cuối tuần).
-- **Fact Views**:
-  - `fact_order_items`: Bảng Fact chi tiết đơn hàng, thời gian vận chuyển (`delivery_days`), độ trễ (`delay_days`, `is_delayed`).
-  - `fact_payments`: Bảng Fact thanh toán giao dịch.
-  - `fact_reviews`: Bảng Fact phản hồi đánh giá và tốc độ phản hồi.
-- **Master View (`vw_sales_master`)**: Bảng One Big Table (OBT) đã denormalize đầy đủ thông tin, giúp kéo thả nhanh trên Power BI.
-
----
-
-## 🔬 Chi tiết các giai đoạn thực hiện (Pipeline Details)
-
-### 1. Khám phá & Làm sạch dữ liệu (EDA & Data Cleaning)
-- **Xử lý giá trị thiếu (Missing Values)**: Điền nội dung cho review không lời thoại, ánh xạ các danh mục chưa được dịch.
-- **Chuẩn hóa thời gian**: Ép kiểu các trường timestamp sang chuẩn `datetime64[ns]`.
-- **Chuẩn hóa địa lý**: Ánh xạ mã 27 bang của Brazil sang tên đầy đủ, lọc bỏ các tọa độ GPS dị biệt nằm ngoài biên giới Brazil.
-- **Toàn vẹn tham chiếu**: Đảm bảo tất cả Foreign Keys giữa 9 bảng khớp nối 100% trước khi nạp vào database.
-
-### 2. Cơ sở dữ liệu & Tối ưu hóa truy vấn (PostgreSQL)
-- Sử dụng SQLAlchemy và `psycopg2` để nạp dữ liệu theo lô (`chunksize=10000`, `method='multi'`).
-- Tạo chỉ mục B-Tree (`create_indx.sql`) trên các cột thường xuyên `JOIN`, `WHERE`, `GROUP BY` (như `order_id`, `customer_id`, `purchase_timestamp`, `review_score`...), giúp tăng tốc độ truy vấn gấp nhiều lần.
-
-### 3. Phân tích chuyên sâu (EDA & Business Insights)
-- **Doanh thu & Đơn hàng**:
-  - Xu hướng doanh thu theo tháng (tăng trưởng mạnh giai đoạn 2017 - 2018).
-  - Phân tích quy luật Pareto 80/20: ~20% danh mục sản phẩm chủ lực mang lại 80% tổng doanh thu.
-  - Phân bố doanh thu và đơn hàng theo từng bang (Sao Paulo, Rio de Janeiro, Minas Gerais chiếm tỷ trọng lớn nhất).
-- **Vận hành Logistics & Đánh giá**:
-  - Tỷ lệ giao hàng trễ (`is_delayed`) và các yếu tố ảnh hưởng từ khoảng cách địa lý.
-  - Mối tương quan nghịch giữa thời gian giao hàng trễ và điểm số `review_score` (giao trễ dẫn đến đánh giá 1 sao áp đảo).
-
-### 4. Xây dựng mô hình Machine Learning
-- **Bài toán**: Phân loại nhị phân dự đoán đơn hàng có bị trễ hẹn so với ngày ước tính hay không (`is_delayed`).
-- **Mô hình**: Random Forest Classifier.
-- **Kỹ thuật áp dụng**:
-  - Xử lý mất cân bằng dữ liệu (Class Imbalance) bằng kỹ thuật lấy mẫu / gán trọng số lớp.
-  - Đánh giá mô hình bằng ROC-AUC Curve, Confusion Matrix, Precision-Recall và F1-Score.
-  - Trích xuất mức độ quan trọng của đặc trưng (**Feature Importance**): Khoảng cách địa lý, kích thước/trọng lượng hàng hóa, phí vận chuyển và thời gian duyệt đơn đóng vai trò quyết định.
-
-### 5. Trực quan hóa & Báo cáo BI (Power BI)
-- Kết nối trực tiếp với các View trong schema `analytics` trên PostgreSQL.
-- Định nghĩa hệ thống công thức DAX Measures cho các chỉ số KPI: Doanh thu (Revenue), Tỷ lệ tăng trưởng MoM/YoY, AOV (Average Order Value), On-time Delivery Rate, CSAT Score.
+- **Schema `staging`**: Lưu trữ 9 bảng sạch nguyên bản với đầy đủ Primary Key, Foreign Key và chỉ mục B-Tree:
+  - `customers`, `sellers`, `products`, `category_translation`, `orders`, `order_items`, `payments`, `reviews`, `geolocation`.
+- **Schema `analytics` (Star Schema)**:
+  - **Dimension Views**: `dim_customers`, `dim_sellers`, `dim_products`, `dim_geolocation`, `dim_date`.
+  - **Fact Views**: `fact_order_items`, `fact_payments`, `fact_reviews`.
+  - **Master View (`vw_sales_master`)**: Dạng One Big Table (OBT) tối ưu hóa truy vấn nhanh cho Power BI.
 
 ---
 
 ## 🛠 Công nghệ & Thư viện sử dụng (Tech Stack)
 
-| Lĩnh vực | Công nghệ / Thư viện |
+| Hạng mục | Công nghệ / Thư viện |
 | :--- | :--- |
-| **Ngôn ngữ lập trình** | Python 3.10+ |
-| **Hệ quản trị CSDL** | PostgreSQL (Schema Staging & Analytics) |
-| **Xử lý & Phân tích dữ liệu** | `pandas`, `numpy` |
-| **Tương tác Cơ sở dữ liệu** | `SQLAlchemy`, `psycopg2-binary`, `python-dotenv` |
-| **Học máy (Machine Learning)** | `scikit-learn`, `imbalanced-learn` |
-| **Trực quan hóa dữ liệu** | `matplotlib`, `seaborn`, `squarify` |
-| **Business Intelligence** | Microsoft Power BI, DAX |
-| **Môi trường phát triển** | Jupyter Notebook, VS Code |
+| **Ngôn ngữ** | Python 3.10+ |
+| **Cơ sở dữ liệu** | PostgreSQL (Schema `staging` & `analytics`) |
+| **Xử lý dữ liệu** | `pandas`, `numpy`, `SQLAlchemy`, `psycopg2-binary` |
+| **Mô hình hóa (ML)** | `scikit-learn`, `imbalanced-learn` |
+| **Trực quan hóa** | `matplotlib`, `seaborn`, `squarify`, Microsoft Power BI |
 
 ---
 
 ## 🚀 Hướng dẫn cài đặt & Chạy dự án (Getting Started)
 
-### 1. Clone dự án và cài đặt môi trường
+### 1. Cài đặt môi trường
 ```bash
 # Clone repository
 git clone https://github.com/doanquangminh14/olist-project.git
 cd olist-ecommerce-analytics
 
-# Tạo môi trường ảo (khuyến nghị)
+# Tạo môi trường ảo
 python -m venv .venv
 source .venv/bin/activate  # Trên Linux/macOS
 # hoặc: .venv\Scripts\activate  # Trên Windows
 
-# Cài đặt các thư viện cần thiết
+# Cài đặt thư viện phụ thuộc
 pip install -r requirements.txt
 ```
 
-### 2. Cấu hình biến môi trường Database
-Tạo tệp `.env` tại thư mục gốc với thông tin kết nối PostgreSQL .
-
-
-### 3. Tạo Schema & Bảng trong PostgreSQL
-Thực thi lần lượt các tệp SQL trong thư mục `sql/`:
-```bash
-# 1. Tạo Database & Schema staging
-psql -U postgres -d olist_ecommerce -f sql/create_db.sql
-
-# 2. Tạo Indexes tăng tốc truy vấn
-psql -U postgres -d olist_ecommerce -f sql/create_indx.sql
-
-# 3. Tạo Star Schema & Views phân tích
-psql -U postgres -d olist_ecommerce -f sql/create_view.sql
+### 2. Cấu hình biến môi trường
+Tạo tệp `.env` tại thư mục gốc từ mẫu `.env.example` và điền thông tin kết nối PostgreSQL của bạn:
+```env
+DB_HOST=your_host
+DB_PORT=your_port
+DB_NAME=your_database_name
+DB_USER=your_username
+DB_PASSWORD=your_password
 ```
 
-### 4. Nạp dữ liệu vào PostgreSQL
-Chạy script ETL Python để đẩy dữ liệu sạch từ `data/clean/` vào CSDL:
+### 3. Chạy Pipeline ETL tự động (`src/`)
+
+Bạn có thể chạy toàn bộ pipeline ETL một cách linh hoạt:
+
 ```bash
-python database/load_to_postgres.py
+# Cách 1: Chạy toàn bộ luồng (Extract -> Transform -> Export CSV -> Nạp vào PostgreSQL)
+python main.py
+
+# Cách 2: Chạy đầy đủ kèm khởi tạo Database (Tạo Schemas, Bảng, Index, Star Schema Views)
+python main.py --run-sql-setup
+
+# Cách 3: Chỉ làm sạch và xuất CSV ra data/clean/ (không cần kết nối CSDL)
+python main.py --clean-only
+
+# Cách 4: Kiểm tra và đối soát số lượng dòng trong CSDL so với dữ liệu sạch (Data Verification)
+python main.py --verify-db
 ```
 
-### 5. Khám phá Notebooks & Chạy mô hình
-Khởi động Jupyter Lab / Notebook để chạy các kịch bản phân tích và Machine Learning:
+### 4. Mở Notebooks để nghiên cứu & thử nghiệm giả thuyết
 ```bash
 jupyter notebook
 ```
-- Mở `notebook/cleaning_data.ipynb` để xem quy trình xử lý dữ liệu.
-- Mở `notebook/eda_123.ipynb` và `notebook/eda_456.ipynb` để xem phân tích số liệu và đồ thị.
-- Mở `notebook/ml.ipynb` để xem quá trình huấn luyện và đánh giá mô hình Random Forest.
+- Mở các notebook trong thư mục `notebook/` để tham khảo quá trình phân tích dữ liệu và xây dựng mô hình.
 
 ---
 
-## 📊 Hình ảnh kết quả phân tích tiêu biểu
+## 📊 Một số biểu đồ phân tích tiêu biểu
 
-Các biểu đồ phân tích chi tiết được lưu trữ trong thư mục [`report/`](report/):
+Các biểu đồ phân tích chi tiết nằm trong thư mục [`report/`](report/):
 
-| Xu hướng doanh thu hàng tháng | Phân tích quy luật Pareto 80/20 |
+| Xu hướng doanh thu hàng tháng | Phân tích Pareto 80/20 |
 | :---: | :---: |
-| ![Monthly Revenue Trend](report/monthly_revenue_trend.png) | ![Pareto Analysis](report/pareto_analysis.png) |
+| ![Monthly Revenue](report/monthly_revenue_trend.png) | ![Pareto](report/pareto_analysis.png) |
 
-| Tỷ lệ giao hàng trễ theo bang | Feature Importance (Machine Learning) |
+| Tỷ lệ giao hàng trễ | Mức độ quan trọng đặc trưng (ML) |
 | :---: | :---: |
 | ![Late Delivery](report/Late%20Delivery%20Percentage.png) | ![Feature Importance](report/rf_top15_feature_importance.png) |
 
 ---
 
-## 👤 Tác giả & Đóng góp
+## 👤 Tác giả
 - **Author**: Minh Doan ([doanquangminh14](https://github.com/doanquangminh14))
-- Mọi đóng góp, báo lỗi hoặc đề xuất cải tiến vui lòng mở **Issue** hoặc tạo **Pull Request**.
