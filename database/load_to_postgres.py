@@ -38,7 +38,7 @@ def load_staging_tables(truncate_first: bool = False):
 
     for table_name, file_path in TABLE_FILES.items():
         if not file_path.exists():
-            print(f" [CẢNH BÁO] Không tìm thấy file: {file_path}")
+            print(f"[CẢNH BÁO] Không tìm thấy file: {file_path}")
             continue
 
         print(f"\n Đang đọc và nạp bảng 'staging.{table_name}'...")

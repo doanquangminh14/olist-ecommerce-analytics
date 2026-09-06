@@ -250,3 +250,5 @@ LEFT JOIN (
     FROM staging.reviews
     GROUP BY order_id
 ) r ON o.order_id = r.order_id;
+
+
