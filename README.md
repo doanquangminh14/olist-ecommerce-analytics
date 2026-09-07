@@ -102,7 +102,14 @@ olist-ecommerce-analytics/
 ├── power_bi/                   # Tài nguyên Power BI
 │   └── dax.md                  # Tài liệu định nghĩa các công thức DAX Measures
 │
-└── report/                     # Hình ảnh biểu đồ trích xuất từ EDA & Machine Learning (22 biểu đồ)
+└── report/                     # 📊 Báo cáo phân tích & Đánh giá Machine Learning
+    ├── README.md               # Mục lục tổng quan báo cáo
+    ├── business/               # Phân tích kinh doanh, Doanh thu, Khách hàng, Logistics
+    │   ├── README.md           # Báo cáo chi tiết EDA & Business Insights
+    │   └── images/             # 18 biểu đồ phân tích kinh doanh (.png)
+    └── ml/                     # Đánh giá mô hình Machine Learning
+        ├── README.md           # Báo cáo chi tiết mô hình Random Forest
+        └── images/             # 4 biểu đồ đánh giá mô hình ML (.png)
 ```
 
 ---
@@ -242,15 +249,15 @@ jupyter notebook
 
 ## 📊 Một số biểu đồ phân tích tiêu biểu
 
-Các biểu đồ phân tích chi tiết nằm trong thư mục [`report/`](report/):
+Các biểu đồ và tài liệu phân tích chi tiết nằm trong thư mục [`report/`](report/) (gồm [`report/business/`](report/business/README.md) & [`report/ml/`](report/ml/README.md)):
 
 | Xu hướng doanh thu hàng tháng | Phân tích Pareto 80/20 |
 | :---: | :---: |
-| ![Monthly Revenue](report/monthly_revenue_trend.png) | ![Pareto](report/pareto_analysis.png) |
+| ![Monthly Revenue](report/business/images/monthly_revenue_trend.png) | ![Pareto](report/business/images/pareto_analysis.png) |
 
 | Tỷ lệ giao hàng trễ | Mức độ quan trọng đặc trưng (ML) |
 | :---: | :---: |
-| ![Late Delivery](report/Late%20Delivery%20Percentage.png) | ![Feature Importance](report/rf_top15_feature_importance.png) |
+| ![Late Delivery](report/business/images/Late%20Delivery%20Percentage.png) | ![Feature Importance](report/ml/images/rf_top15_feature_importance.png) |
 
 ---
 

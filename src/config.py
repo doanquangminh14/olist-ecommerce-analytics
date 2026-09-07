@@ -9,6 +9,10 @@ RAW_DATA_DIR = DATA_DIR / "raw"
 CLEAN_DATA_DIR = DATA_DIR / "clean"
 SQL_DIR = BASE_DIR / "sql"
 REPORT_DIR = BASE_DIR / "report"
+BUSINESS_REPORT_DIR = REPORT_DIR / "business"
+ML_REPORT_DIR = REPORT_DIR / "ml"
+BUSINESS_IMAGES_DIR = BUSINESS_REPORT_DIR / "images"
+ML_IMAGES_DIR = ML_REPORT_DIR / "images"
 
 # Load environment variables
 load_dotenv(dotenv_path=BASE_DIR / ".env")
