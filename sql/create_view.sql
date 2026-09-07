@@ -1,6 +1,14 @@
 -- ==============================================================================
 -- STAR SCHEMA & ANALYTICS VIEWS FOR POWER BI
 -- Schema: ANALYTICS (Reads from STAGING)
+-- Relationships & Cardinality:
+--   - dim_customers   (1) -> (*) fact_order_items  [customer_id]
+--   - dim_products    (1) -> (*) fact_order_items  [product_id]
+--   - dim_sellers     (1) -> (*) fact_order_items  [seller_id]
+--   - dim_date        (1) -> (*) fact_order_items  [purchase_date_key]
+--   - dim_geolocation (1) -> (*) dim_customers / dim_sellers [zip_code_prefix]
+--   - fact_order_items (N) <-> (N) fact_payments   [order_id]
+--   - fact_order_items (N) -> (1) fact_reviews     [order_id]
 -- ==============================================================================
 
 CREATE SCHEMA IF NOT EXISTS analytics;

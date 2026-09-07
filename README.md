@@ -163,14 +163,28 @@ graph TD
     classDef fact fill:#ff9966,stroke:#b34700,stroke-width:2px,color:#000,font-weight:bold;
     classDef dim fill:#5dade2,stroke:#1b4f72,stroke-width:1.5px,color:#000,font-weight:bold;
 
-    dim_date["📅 dim_date"]:::dim -->|purchase_date_key| fact_order_items["⭐ fact_order_items (Central Fact)"]:::fact
-    dim_customers["👤 dim_customers"]:::dim -->|customer_id| fact_order_items
-    dim_sellers["🏬 dim_sellers"]:::dim -->|seller_id| fact_order_items
-    dim_products["📦 dim_products"]:::dim -->|product_id| fact_order_items
+    dim_date["📅 dim_date"]:::dim -->|"1 : N (purchase_date_key)"| fact_order_items["⭐ fact_order_items (Central Fact)"]:::fact
+    dim_customers["👤 dim_customers"]:::dim -->|"1 : N (customer_id)"| fact_order_items
+    dim_sellers["🏬 dim_sellers"]:::dim -->|"1 : N (seller_id)"| fact_order_items
+    dim_products["📦 dim_products"]:::dim -->|"1 : N (product_id)"| fact_order_items
 
-    fact_order_items -.->|order_id| fact_payments["💳 fact_payments"]:::fact
-    fact_order_items -.->|order_id| fact_reviews["⭐ fact_reviews"]:::fact
+    dim_geolocation["🌍 dim_geolocation"]:::dim -.->|"1 : N (zip_code_prefix)"| dim_customers
+    dim_geolocation -.->|"1 : N (zip_code_prefix)"| dim_sellers
+
+    fact_order_items -.->|"N : N (order_id)"| fact_payments["💳 fact_payments"]:::fact
+    fact_order_items -.->|"N : 1 (order_id)"| fact_reviews["⭐ fact_reviews"]:::fact
 ```
+
+#### Bảng quan hệ thực thể & Cardinality trong Star Schema (Data Model Relationships):
+| Bảng nguồn (Dimension/Fact) | Bảng đích (Fact/Dimension) | Khóa liên kết (Join Key) | Mối quan hệ (Cardinality) | Ý nghĩa nghiệp vụ |
+| :--- | :--- | :--- | :---: | :--- |
+| `dim_customers` | `fact_order_items` | `customer_id` | **1 → \*** (1:N) | 1 khách hàng có thể mua nhiều mặt hàng / đơn hàng |
+| `dim_products` | `fact_order_items` | `product_id` | **1 → \*** (1:N) | 1 sản phẩm có thể xuất hiện trong nhiều chi tiết đơn hàng |
+| `dim_sellers` | `fact_order_items` | `seller_id` | **1 → \*** (1:N) | 1 người bán có thể bán nhiều chi tiết đơn hàng |
+| `dim_date` | `fact_order_items` | `purchase_date_key` | **1 → \*** (1:N) | 1 ngày ghi nhận nhiều giao dịch phát sinh |
+| `dim_geolocation` | `dim_customers` / `dim_sellers` | `zip_code_prefix` | **1 → \*** (1:N) | 1 mã bưu điện định vị nhiều khách hàng / người bán |
+| `fact_order_items` | `fact_payments` | `order_id` | **N ↔ N** (N:N qua `order_id`) | 1 đơn hàng có thể có nhiều items và thanh toán bằng nhiều hình thức |
+| `fact_order_items` | `fact_reviews` | `order_id` | **N → 1** | Nhiều items trong cùng 1 đơn hàng liên kết tới đánh giá của đơn đó |
 
 ### 2. Chi tiết các tầng dữ liệu
 - **Schema `staging`**: Lưu trữ 9 bảng sạch nguyên bản với đầy đủ Primary Key, Foreign Key và chỉ mục B-Tree:
