@@ -56,11 +56,10 @@ Dashboard cung cấp cái nhìn toàn diện 360 độ về hiệu quả kinh do
   10. `ferramentas_jardim` (Garden Tools)
 
 ### 4.3. Hiệu Quả Giao Hàng & Trạng Thái Đơn (Order Status by Delivery Performance)
-- **Dạng biểu đồ**: Donut Chart.
+- **Dạng biểu đồ**: Donut Chart (Lọc trên tập đơn hàng đã giao hoàn tất `delivered`).
 - **Tỷ trọng**:
-  - **On-Time (Đúng/Trước hạn)**: **`101.48K`** đơn (**`90.09%`**) — Thể hiện năng lực vận hành cốt lõi đáp ứng cam kết.
-  - **Delayed (Giao trễ hạn)**: **`8.72K`** đơn (**`7.74%`**) — Nhóm rủi ro cao gây sụt giảm mạnh điểm đánh giá review.
-  - **Khác/Chưa xác định**: **`2.45K`** đơn (**`2.18%`**).
+  - **On-Time (Đúng/Trước hạn)**: **`88.65K`** đơn (**`91.89%`**) — Thể hiện năng lực vận hành cốt lõi đáp ứng cam kết.
+  - **Delayed (Giao trễ hạn)**: **`7.83K`** đơn (**`8.11%`**) — Tỷ lệ giao hàng trễ hạn chuẩn xác trên tập các đơn hàng đã giao (khớp 100% với phân tích Logistics trong Jupyter Notebook `eda_456.ipynb`).
 
 ### 4.4. Cơ Cấu Phương Thức Thanh Toán (Payment Type Distribution)
 - **Dạng biểu đồ**: Donut Chart.
