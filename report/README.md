@@ -46,3 +46,7 @@ report/
   - Đánh giá mô hình Random Forest Classifier (Độ chính xác 80.37%, Ma trận nhầm lẫn, Đường cong ROC).
   - Phân tích Top 15 đặc trưng quan trọng nhất (Feature Importance).
   - Chiến lược ứng dụng thực tế vào hệ thống vận hành thương mại điện tử.
+
+- **[Khám Phá Power BI Interactive Dashboard](../power%20bi/README.md)**:
+  - Báo cáo tương tác đa chiều về Doanh thu (13.59M BRL), Đơn hàng (99K), Điểm đánh giá (4.09/5) và Bản đồ 27 bang Brazil.
+  - Tệp nguồn `.pbix` và tài liệu hướng dẫn chi tiết.

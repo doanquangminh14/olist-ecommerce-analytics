@@ -98,6 +98,11 @@ olist-ecommerce-analytics/
 |   +-- eda_123.ipynb           # Kiểm chứng giả thuyết về Doanh thu, Xu hướng thời gian, Pareto 80/20
 |   +-- eda_456.ipynb           # Kiểm chứng giả thuyết về Vận chuyển/Logistics & Điểm đánh giá Review
 |   +-- ml.ipynb                # Thử nghiệm mô hình Machine Learning dự đoán sự hài lòng khách hàng
++-- power bi/                   # Báo cáo Business Intelligence tương tác (Power BI)
+|   +-- README.md               # Tài liệu chi tiết về Dashboard, KPIs và DAX Measures
+|   +-- olist_ecommerce.pbix    # Tệp nguồn Power BI Desktop
+|   +-- olist_ecommerce.pdf     # Bản xuất báo cáo định dạng PDF
+|   +-- dashboard_overview.png  # Ảnh chụp trực quan tổng thể Dashboard
 |
 +-- report/                     # Báo cáo phân tích & Đánh giá Machine Learning
     +-- README.md               # Mục lục tổng quan báo cáo
