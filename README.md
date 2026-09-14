@@ -1,39 +1,39 @@
 # Olist Brazilian E-Commerce Analytics & Machine Learning Pipeline
 
-Du an phan tich du lieu toan dien (End-to-End Analytics & Data Warehousing) tren bo du lieu thuong mai dien tu **Olist (Brazil)** gom hon 100.000 don hang tu nam 2016 den 2018. 
+Dự án phân tích dữ liệu toàn diện (End-to-End Analytics & Data Warehousing) trên bộ dữ liệu thương mại điện tử **Olist (Brazil)** gồm hơn 100.000 đơn hàng từ năm 2016 đến 2018. 
 
-Du an duoc phan tach ro rang theo chuan cong nghiep:
-- **`src/`**: Pipeline ETL (Extract - Transform - Load) dang module hoa trong Python, tu dong hoa toan bo qua trinh lam sach du lieu, kiem tra rang buoc toan ven va nap vao PostgreSQL.
-- **`notebook/`**: Danh rieng cho nghien cuu tham do (Exploratory Data Analysis - EDA), kiem chung cac gia thuyet kinh doanh va thu nghiem mo hinh Machine Learning.
-- **`sql/`**: Data Warehouse kien truc Star Schema (Dimension, Fact, Master Views) toi uu chi muc B-Tree tren PostgreSQL.
-- **`report/`**: Truc quan hoa bao cao phan tich va theo doi cac chi so KPI.
+Dự án được phân tách rõ ràng theo chuẩn công nghiệp:
+- **`src/`**: Pipeline ETL (Extract - Transform - Load) dạng module hóa trong Python, tự động hóa toàn bộ quá trình làm sạch dữ liệu, kiểm tra ràng buộc toàn vẹn và nạp vào PostgreSQL.
+- **`notebook/`**: Dành riêng cho nghiên cứu thăm dò (Exploratory Data Analysis - EDA), kiểm chứng các giả thuyết kinh doanh và thử nghiệm mô hình Machine Learning.
+- **`sql/`**: Data Warehouse kiến trúc Star Schema (Dimension, Fact, Master Views) tối ưu chỉ mục B-Tree trên PostgreSQL.
+- **`report/`**: Trực quan hóa báo cáo phân tích và theo dõi các chỉ số KPI.
 
 ---
 
-## Muc Luc
-1. [Tong quan du an](#1-tong-quan-du-an)
-2. [Kien truc luong xu ly (Architecture)](#2-kien-truc-luong-xu-ly-architecture)
-3. [Cau truc thu muc (Project Structure)](#3-cau-truc-thu-muc-project-structure)
-4. [Mo hinh du lieu (Data Modeling & Database Design)](#4-mo-hinh-du-lieu-data-modeling--database-design)
+## Mục Lục
+1. [Tổng quan dự án](#1-tổng-quan-dự-án)
+2. [Kiến trúc luồng xử lý (Architecture)](#2-kiến-trúc-luồng-xử-lý-architecture)
+3. [Cấu trúc thư mục (Project Structure)](#3-cấu-trúc-thư-mục-project-structure)
+4. [Mô hình dữ liệu (Data Modeling & Database Design)](#4-mô-hình-dữ-liệu-data-modeling--database-design)
 5. [Pipeline ETL trong `src/`](#5-pipeline-etl-trong-src)
-6. [Khu vuc Nghien cuu & Gia thuyet trong `notebook/`](#6-khu-vuc-nghien-cuu--gia-thuyet-trong-notebook)
-7. [Cong nghe & Thu vien su dung (Tech Stack)](#7-cong-nghe--thu-vien-su-dung-tech-stack)
-8. [Huong dan cai dat & Chay du an (Getting Started)](#8-huong-dan-cai-dat--chay-du-an-getting-started)
+6. [Khu vực Nghiên cứu & Giả thuyết trong `notebook/`](#6-khu-vực-nghiên-cứu--giả-thuyết-trong-notebook)
+7. [Công nghệ & Thư viện sử dụng (Tech Stack)](#7-công-nghệ--thư-viện-sử-dụng-tech-stack)
+8. [Hướng dẫn cài đặt & Chạy dự án (Getting Started)](#8-hướng-dẫn-cài-đặt--chạy-dự-án-getting-started)
 
 ---
 
-## 1. Tong quan du an
+## 1. Tổng quan dự án
 
-- **Bo du lieu**: Brazilian E-Commerce Public Dataset by Olist (9 bang du lieu quan he: Don hang, Khach hang, Nguoi ban, San pham, Danh gia, Thanh toan, Danh muc, Toa do dia ly).
-- **Muc tieu**:
-  - Tu dong hoa pipeline ETL lam sach va nap 9 tap du lieu sach vao CSDL PostgreSQL mot cach nhat quan.
-  - Xay dung kho du lieu phan lop (`staging` va `analytics`) phuc vu bao cao da chieu.
-  - Phan tich kham pha va kiem chung cac gia thuyet ve doanh thu, logistics va do hai long cua khach hang.
-  - Du doan don hang co nguy co giao tre bang thuat toan Random Forest.
+- **Bộ dữ liệu**: Brazilian E-Commerce Public Dataset by Olist (9 bảng dữ liệu quan hệ: Đơn hàng, Khách hàng, Người bán, Sản phẩm, Đánh giá, Thanh toán, Danh mục, Tọa độ địa lý).
+- **Mục tiêu**:
+  - Tự động hóa pipeline ETL làm sạch và nạp 9 tập dữ liệu sạch vào CSDL PostgreSQL một cách nhất quán.
+  - Xây dựng kho dữ liệu phân lớp (`staging` và `analytics`) phục vụ báo cáo đa chiều.
+  - Phân tích khám phá và kiểm chứng các giả thuyết về doanh thu, logistics và độ hài lòng của khách hàng.
+  - Dự đoán đơn hàng có nguy cơ giao trễ bằng thuật toán Random Forest.
 
 ---
 
-## 2. Kien truc luong xu ly (Architecture)
+## 2. Kiến trúc luồng xử lý (Architecture)
 
 ```mermaid
 flowchart TD
@@ -60,100 +60,100 @@ flowchart TD
 
 ---
 
-## 3. Cau truc thu muc (Project Structure)
+## 3. Cấu trúc thư mục (Project Structure)
 
 ```text
 olist-ecommerce-analytics/
 |
-+-- main.py                     # Diem chay chinh (Entrypoint) cho toan bo Pipeline ETL
-+-- requirements.txt            # Danh sach cac thu vien Python phu thuoc
-+-- .env                        # Cau hinh bien moi truong ket noi Database (Host, Port, User, Password)
-+-- README.md                   # Tai lieu chi tiet ve du an
++-- main.py                     # Điểm chạy chính (Entrypoint) cho toàn bộ Pipeline ETL
++-- requirements.txt            # Danh sách các thư viện Python phụ thuộc
++-- .env                        # Cấu hình biến môi trường kết nối Database (Host, Port, User, Password)
++-- README.md                   # Tài liệu chi tiết về dự án
 |
-+-- data/                       # Thu muc du lieu
-|   +-- raw/                    # 9 tep du lieu tho goc tu Olist
-|   +-- clean/                  # 9 tep du lieu sau khi duoc pipeline xu ly sach
++-- data/                       # Thư mục dữ liệu
+|   +-- raw/                    # 9 tệp dữ liệu thô gốc từ Olist
+|   +-- clean/                  # 9 tệp dữ liệu sau khi được pipeline xử lý sạch
 |
 +-- src/                        # CORE ETL ENGINE (Production Pipeline)
-|   +-- __init__.py             # Khoi tao package va cau hinh UTF-8 console
-|   +-- config.py               # Thiet lap duong dan, anh xa 27 bang, cau hinh DB
-|   +-- extract.py              # Doc du lieu tho tu data/raw/
-|   +-- transform.py            # Tien xu ly, chuan hoa, loc di biet & kiem tra toan ven (FK)
-|   +-- load.py                 # Luu tru data/clean/ & nap vao PostgreSQL schema staging
-|   +-- db.py                   # Quan ly ket noi DB, kiem thu & thuc thi DDL/Views SQL
-|   +-- pipeline.py             # Dieu phoi (Orchestrator) toan bo luong ETL kem CLI flags
+|   +-- __init__.py             # Khởi tạo package và cấu hình UTF-8 console
+|   +-- config.py               # Thiết lập đường dẫn, ánh xạ 27 bang, cấu hình DB
+|   +-- extract.py              # Đọc dữ liệu thô từ data/raw/
+|   +-- transform.py            # Tiền xử lý, chuẩn hóa, lọc dị biệt & kiểm tra toàn vẹn (FK)
+|   +-- load.py                 # Lưu trữ data/clean/ & nạp vào PostgreSQL schema staging
+|   +-- db.py                   # Quản lý kết nối DB, kiểm thử & thực thi DDL/Views SQL
+|   +-- pipeline.py             # Điều phối (Orchestrator) toàn bộ luồng ETL kèm CLI flags
 |
-+-- database/                   # Scripts ho tro thao tac CSDL phu tro
-|   +-- connect_db.py           # Module ket noi co so du lieu
-|   +-- load_to_postgres.py     # Script nap du lieu doc lap
++-- database/                   # Scripts hỗ trợ thao tác CSDL phụ trợ
+|   +-- connect_db.py           # Module kết nối cơ sở dữ liệu
+|   +-- load_to_postgres.py     # Script nạp dữ liệu độc lập
 |
-+-- sql/                        # Kich ban SQL dinh nghia Data Warehouse
-|   +-- create_db.sql           # DDL tao schema staging, 9 bang quan he & Foreign Keys
-|   +-- create_indx.sql         # Tao chi muc B-Tree toi uu hoa hieu nang truy van
-|   +-- create_view.sql         # Tao mo hinh Star Schema (Dim, Fact) & Master View
++-- sql/                        # Kịch bản SQL định nghĩa Data Warehouse
+|   +-- create_db.sql           # DDL tạo schema staging, 9 bảng quan hệ & Foreign Keys
+|   +-- create_indx.sql         # Tạo chỉ mục B-Tree tối ưu hóa hiệu năng truy vấn
+|   +-- create_view.sql         # Tạo mô hình Star Schema (Dim, Fact) & Master View
 |
-+-- notebook/                   # NGHIEN CUU & KIEM CHUNG GIA THUYET (Jupyter)
-|   +-- undertand_data.ipynb    # Kham pha cau truc, phan bo va cac van de cua du lieu tho
-|   +-- cleaning_data.ipynb     # Notebook thu nghiem cac buoc tien xu ly truoc khi dong goi vao src/
-|   +-- eda_123.ipynb           # Kiem chung gia thuyet ve Doanh thu, Xu huong thoi gian, Pareto 80/20
-|   +-- eda_456.ipynb           # Kiem chung gia thuyet ve Van chuyen/Logistics & Diem danh gia Review
-|   +-- ml.ipynb                # Thu nghiem mo hinh Machine Learning du doan giao hang tre
++-- notebook/                   # NGHIÊN CỨU & KIỂM CHỨNG GIẢ THUYẾT (Jupyter)
+|   +-- undertand_data.ipynb    # Khám phá cấu trúc, phân bổ và các vấn đề của dữ liệu thô
+|   +-- cleaning_data.ipynb     # Notebook thử nghiệm các bước tiền xử lý trước khi đóng gói vào src/
+|   +-- eda_123.ipynb           # Kiểm chứng giả thuyết về Doanh thu, Xu hướng thời gian, Pareto 80/20
+|   +-- eda_456.ipynb           # Kiểm chứng giả thuyết về Vận chuyển/Logistics & Điểm đánh giá Review
+|   +-- ml.ipynb                # Thử nghiệm mô hình Machine Learning dự đoán sự hài lòng khách hàng
 |
-+-- report/                     # Bao cao phan tich & Danh gia Machine Learning
-    +-- README.md               # Muc luc tong quan bao cao
-    +-- business/               # Phan tich kinh doanh, Doanh thu, Khach hang, Logistics
-    |   +-- README.md           # Bao cao chi tiet EDA & Business Insights
-    |   +-- images/             # 18 bieu do phan tich kinh doanh (.png)
-    +-- ml/                     # Danh gia mo hinh Machine Learning
-        +-- README.md           # Bao cao chi tiet mo hinh Random Forest
-        +-- images/             # 4 bieu do danh gia mo hinh ML (.png)
++-- report/                     # Báo cáo phân tích & Đánh giá Machine Learning
+    +-- README.md               # Mục lục tổng quan báo cáo
+    +-- business/               # Phân tích kinh doanh, Doanh thu, Khách hàng, Logistics
+    |   +-- README.md           # Báo cáo chi tiết EDA & Business Insights
+    |   +-- images/             # 18 biểu đồ phân tích kinh doanh (.png)
+    +-- ml/                     # Đánh giá mô hình Machine Learning
+        +-- README.md           # Báo cáo chi tiết mô hình Random Forest
+        +-- images/             # 4 biểu đồ đánh giá mô hình ML (.png)
 ```
 
 ---
 
 ## 4. Pipeline ETL trong `src/`
 
-Pipeline duoc thiet ke theo nguyen ly mo-dun hoa cao (High Cohesion, Loose Coupling):
+Pipeline được thiết kế theo nguyên lý mô-đun hóa cao (High Cohesion, Loose Coupling):
 
 1. **`extract.py`**:
-   - Quet va nap toan bo 9 tep du lieu tho tu `data/raw/` vao bo nho.
+   - Quét và nạp toàn bộ 9 tệp dữ liệu thô từ `data/raw/` vào bộ nhớ.
 2. **`transform.py`**:
-   - Chuan hoa kieu ngay gio `datetime64[ns]` tren toan bo cac cot thoi gian.
-   - Xu ly cac gia tri khuyet thieu (`reviews`, `products`).
-   - Xu ly bat thuong thanh toan (loai bo `payment_type = 'not_defined'`, chuan hoa ky tra gop).
-   - Dong bo danh muc dich thuat tieng Anh (`category_translation`).
-   - Chuyen doi ma 27 bang viet tat sang ten day du (`SP` -> `São Paulo`).
-   - Khu trung lap va loai bo toa do ngoai lai ngoai lanh tho Brazil (`geolocation`).
-   - **Tu dong kiem tra rang buoc toan ven tham chieu (Foreign Key Integrity)**: Dam bao 100% khong co ban ghi mo coi (orphan records) giua cac bang lien ket.
+   - Chuẩn hóa kiểu ngày giờ `datetime64[ns]` trên toàn bộ các cột thời gian.
+   - Xử lý các giá trị khuyết thiếu (`reviews`, `products`).
+   - Xử lý bất thường thanh toán (loại bỏ `payment_type = 'not_defined'`, chuẩn hóa kỳ trả góp).
+   - Đồng bộ danh mục dịch thuật tiếng Anh (`category_translation`).
+   - Chuyển đổi mã 27 bang viết tắt sang tên đầy đủ (`SP` -> `São Paulo`).
+   - Khử trùng lặp và loại bỏ tọa độ ngoại lai ngoài lãnh thổ Brazil (`geolocation`).
+   - **Tự động kiểm tra ràng buộc toàn vẹn tham chiếu (Foreign Key Integrity)**: Đảm bảo 100% không có bản ghi mồ côi (orphan records) giữa các bảng liên kết.
 3. **`load.py`**:
-   - Xuat du lieu sach ra thu muc `data/clean/*.csv`.
-   - Nap tuan tu 9 bang vao schema `staging` cua PostgreSQL theo dung thu tu phu thuoc khoa ngoai.
+   - Xuất dữ liệu sạch ra thư mục `data/clean/*.csv`.
+   - Nạp tuần tự 9 bảng vào schema `staging` của PostgreSQL theo đúng thứ tự phụ thuộc khóa ngoại.
 4. **`db.py`**:
-   - Cung cap engine SQLAlchemy, kiem tra ket noi va thuc thi cac tep DDL/Views SQL.
+   - Cung cấp engine SQLAlchemy, kiểm tra kết nối và thực thi các tệp DDL/Views SQL.
 5. **`pipeline.py` / `main.py`**:
-   - Diem kich hoat toan bo luong voi cac tuy chon dong lenh linh hoat.
+   - Điểm kích hoạt toàn bộ luồng với các tùy chọn dòng lệnh linh hoạt.
 
 ---
 
-## 5. Khu vuc Nghien cuu & Gia thuyet trong `notebook/`
+## 5. Khu vực Nghiên cứu & Giả thuyết trong `notebook/`
 
-Cac tep Jupyter Notebook dong vai tro la khong gian thu nghiem, tim hieu va kiem chung cac gia thuyet kinh doanh:
+Các tệp Jupyter Notebook đóng vai trò là không gian thử nghiệm, tìm hiểu và kiểm chứng các giả thuyết kinh doanh:
 
-- **Gia thuyet Doanh thu & Danh muc ([`eda_123.ipynb`](notebook/eda_123.ipynb))**:
-  - *Gia thuyet*: Doanh so Olist tang truong theo chu ky mua vu va tuan theo nguyen ly Pareto 80/20.
-  - *Ket qua*: Doanh thu dat dinh vao thang 11 (Black Friday) va quy 1-2 nam 2018; khoang 20% danh muc dem lai phan lon doanh thu.
-- **Gia thuyet Logistics & Trai nghiem ([`eda_456.ipynb`](notebook/eda_456.ipynb))**:
-  - *Gia thuyet*: Thoi gian giao hang cham tre so voi ngay du kien la nguyen nhan chinh dan den danh gia 1 sao.
-  - *Ket qua*: Ty le danh gia tieu cuc (1-2 sao) tang vot khi don hang giao tre (`is_delayed = 1`).
-- **Mo hinh Du doan ([`ml.ipynb`](notebook/ml.ipynb))**:
-  - Xay dung mo hinh Random Forest Classifier de phat hien som cac don hang co nguy co bi giao tre nham kich hoat canh bao chuoi cung ung.
+- **Giả thuyết Doanh thu & Danh mục ([`eda_123.ipynb`](notebook/eda_123.ipynb))**:
+  - *Giả thuyết*: Doanh số Olist tăng trưởng theo chu kỳ mùa vụ và tuân theo nguyên lý Pareto 80/20.
+  - *Kết quả*: Doanh thu đạt đỉnh vào tháng 11 (Black Friday) và quý 1-2 năm 2018; khoảng 20% danh mục đem lại phần lớn doanh thu.
+- **Giả thuyết Logistics & Trải nghiệm ([`eda_456.ipynb`](notebook/eda_456.ipynb))**:
+  - *Giả thuyết*: Thời gian giao hàng chậm trễ so với ngày dự kiến là nguyên nhân chính dẫn đến đánh giá 1 sao.
+  - *Kết quả*: Tỷ lệ đánh giá tiêu cực (1-2 sao) tăng vọt khi đơn hàng giao trễ (`is_delayed = 1`).
+- **Mô hình Dự đoán ([`ml.ipynb`](notebook/ml.ipynb))**:
+  - Xây dựng mô hình Random Forest Classifier để phát hiện sớm các đơn hàng có nguy cơ bị đánh giá thấp nhằm kích hoạt cảnh báo chăm sóc khách hàng chủ động.
 
 ---
 
-## 6. Mo hinh du lieu (Data Modeling & Database Design)
+## 6. Mô hình dữ liệu (Data Modeling & Database Design)
 
-### 1. Kien truc Star Schema (`analytics`)
-Mo hinh du lieu phan tich duoc thiet ke theo chuan **Kimball Star Schema** trong schema `analytics` (xay dung tu [`sql/create_view.sql`](sql/create_view.sql)), toi uu hoa cho truy van bao cao va Power BI:
+### 1. Kiến trúc Star Schema (`analytics`)
+Mô hình dữ liệu phân tích được thiết kế theo chuẩn **Kimball Star Schema** trong schema `analytics` (xây dựng từ [`sql/create_view.sql`](sql/create_view.sql)), tối ưu hóa cho truy vấn báo cáo và Power BI:
 
 ```mermaid
 graph TD
@@ -172,58 +172,58 @@ graph TD
     fact_order_items -.->|"N : 1 (order_id)"| fact_reviews["fact_reviews"]:::fact
 ```
 
-#### Bang quan he thuc the & Cardinality trong Star Schema:
-| Bang nguon (Dimension/Fact) | Bang dich (Fact/Dimension) | Khoa lien ket (Join Key) | Moi quan he (Cardinality) | Y nghia nghiep vu |
+#### Bảng quan hệ thực thể & Cardinality trong Star Schema:
+| Bảng nguồn (Dimension/Fact) | Bảng đích (Fact/Dimension) | Khóa liên kết (Join Key) | Mối quan hệ (Cardinality) | Ý nghĩa nghiệp vụ |
 | :--- | :--- | :--- | :---: | :--- |
-| `dim_customers` | `fact_order_items` | `customer_id` | **1 -> \*** (1:N) | 1 khach hang co the mua nhieu mat hang / don hang |
-| `dim_products` | `fact_order_items` | `product_id` | **1 -> \*** (1:N) | 1 san pham co the xuat hien trong nhieu chi tiet don hang |
-| `dim_sellers` | `fact_order_items` | `seller_id` | **1 -> \*** (1:N) | 1 nguoi ban co the ban nhieu chi tiet don hang |
-| `dim_date` | `fact_order_items` | `purchase_date_key` | **1 -> \*** (1:N) | 1 ngay ghi nhan nhieu giao dich phat sinh |
-| `dim_geolocation` | `dim_customers` / `dim_sellers` | `zip_code_prefix` | **1 -> \*** (1:N) | 1 ma buu dien dinh vi nhieu khach hang / nguoi ban |
-| `fact_order_items` | `fact_payments` | `order_id` | **N <-> N** (N:N qua `order_id`) | 1 don hang co the co nhieu items va thanh toan bang nhieu hinh thuc |
-| `fact_order_items` | `fact_reviews` | `order_id` | **N -> 1** | Nhieu items trong cung 1 don hang lien ket toi danh gia cua don do |
+| `dim_customers` | `fact_order_items` | `customer_id` | **1 -> \*** (1:N) | 1 khách hàng có thể mua nhiều mặt hàng / đơn hàng |
+| `dim_products` | `fact_order_items` | `product_id` | **1 -> \*** (1:N) | 1 sản phẩm có thể xuất hiện trong nhiều chi tiết đơn hàng |
+| `dim_sellers` | `fact_order_items` | `seller_id` | **1 -> \*** (1:N) | 1 người bán có thể bán nhiều chi tiết đơn hàng |
+| `dim_date` | `fact_order_items` | `purchase_date_key` | **1 -> \*** (1:N) | 1 ngày ghi nhận nhiều giao dịch phát sinh |
+| `dim_geolocation` | `dim_customers` / `dim_sellers` | `zip_code_prefix` | **1 -> \*** (1:N) | 1 mã bưu điện định vị nhiều khách hàng / người bán |
+| `fact_order_items` | `fact_payments` | `order_id` | **N <-> N** (N:N qua `order_id`) | 1 đơn hàng có thể có nhiều items và thanh toán bằng nhiều hình thức |
+| `fact_order_items` | `fact_reviews` | `order_id` | **N -> 1** | Nhiều items trong cùng 1 đơn hàng liên kết tới đánh giá của đơn đó |
 
-### 2. Chi tiet cac tang du lieu
-- **Schema `staging`**: Luu tru 9 bang sach nguyen ban voi day du Primary Key, Foreign Key va chi muc B-Tree:
+### 2. Chi tiết các tầng dữ liệu
+- **Schema `staging`**: Lưu trữ 9 bảng sạch nguyên bản với đầy đủ Primary Key, Foreign Key và chỉ mục B-Tree:
   - `customers`, `sellers`, `products`, `category_translation`, `orders`, `order_items`, `payments`, `reviews`, `geolocation`.
 - **Schema `analytics` (Star Schema)**:
   - **Dimension Views**: `dim_customers`, `dim_sellers`, `dim_products`, `dim_geolocation`, `dim_date`.
   - **Fact Views**: `fact_order_items`, `fact_payments`, `fact_reviews`.
-  - **Master View (`vw_sales_master`)**: Dang One Big Table (OBT) ket hop day du thong tin don hang, khach hang, nguoi ban, danh gia nham toi uu hoa truy van nhanh cho Power BI.
+  - **Master View (`vw_sales_master`)**: Dạng One Big Table (OBT) kết hợp đầy đủ thông tin đơn hàng, khách hàng, người bán, đánh giá nhằm tối ưu hóa truy vấn nhanh cho Power BI.
 
 ---
 
-## 7. Cong nghe & Thu vien su dung (Tech Stack)
+## 7. Công nghệ & Thư viện sử dụng (Tech Stack)
 
-| Hang muc | Cong nghe / Thu vien |
+| Hạng mục | Công nghệ / Thư viện |
 | :--- | :--- |
-| **Ngon ngu** | Python 3.10+ |
-| **Co so du lieu** | PostgreSQL (Schema `staging` & `analytics`) |
-| **Xu ly du lieu** | `pandas`, `numpy`, `SQLAlchemy`, `psycopg2-binary` |
-| **Mo hinh hoa (ML)** | `scikit-learn`, `imbalanced-learn` |
-| **Truc quan hoa** | `matplotlib`, `seaborn`, `squarify`, Microsoft Power BI |
+| **Ngôn ngữ** | Python 3.10+ |
+| **Cơ sở dữ liệu** | PostgreSQL (Schema `staging` & `analytics`) |
+| **Xử lý dữ liệu** | `pandas`, `numpy`, `SQLAlchemy`, `psycopg2-binary` |
+| **Mô hình hóa (ML)** | `scikit-learn`, `imbalanced-learn` |
+| **Trực quan hóa** | `matplotlib`, `seaborn`, `squarify`, Microsoft Power BI |
 
 ---
 
-## 8. Huong dan cai dat & Chay du an (Getting Started)
+## 8. Hướng dẫn cài đặt & Chạy dự án (Getting Started)
 
-### 1. Cai dat moi truong
+### 1. Cài đặt môi trường
 ```bash
 # Clone repository
 git clone https://github.com/doanquangminh14/olist-project.git
 cd olist-ecommerce-analytics
 
-# Tao moi truong ao
+# Tạo môi trường ảo
 python -m venv .venv
-source .venv/bin/activate  # Tren Linux/macOS
-# hoac: .venv\Scripts\activate  # Tren Windows
+source .venv/bin/activate  # Trên Linux/macOS
+# hoặc: .venv\Scripts\activate  # Trên Windows
 
-# Cai dat thu vien phu thuoc
+# Cài đặt thư viện phụ thuộc
 pip install -r requirements.txt
 ```
 
-### 2. Cau hinh bien moi truong
-Tao tep `.env` tai thu muc goc tu mau `.env.example` va dien thong tin ket noi PostgreSQL cua ban:
+### 2. Cấu hình biến môi trường
+Tạo tệp `.env` tại thư mục gốc từ mẫu `.env.example` và điền thông tin kết nối PostgreSQL của bạn:
 ```env
 DB_HOST=your_host
 DB_PORT=your_port
@@ -232,45 +232,45 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 ```
 
-### 3. Chay Pipeline ETL tu dong (`src/`)
+### 3. Chạy Pipeline ETL tự động (`src/`)
 
-Ban co the chay toan bo pipeline ETL mot cach linh hoat:
+Bạn có thể chạy toàn bộ pipeline ETL một cách linh hoạt:
 
 ```bash
-# Cach 1: Chay toan bo luong (Extract -> Transform -> Export CSV -> Nap vao PostgreSQL)
+# Cách 1: Chạy toàn bộ luồng (Extract -> Transform -> Export CSV -> Nạp vào PostgreSQL)
 python main.py
 
-# Cach 2: Chay day du kem khoi tao Database (Tao Schemas, Bang, Index, Star Schema Views)
+# Cách 2: Chạy đầy đủ kèm khởi tạo Database (Tạo Schemas, Bảng, Index, Star Schema Views)
 python main.py --run-sql-setup
 
-# Cach 3: Chi lam sach va xuat CSV ra data/clean/ (khong can ket noi CSDL)
+# Cách 3: Chỉ làm sạch và xuất CSV ra data/clean/ (không cần kết nối CSDL)
 python main.py --clean-only
 
-# Cach 4: Kiem tra va doi soat so luong dong trong CSDL so voi du lieu sach (Data Verification)
+# Cách 4: Kiểm tra và đối soát số lượng dòng trong CSDL so với dữ liệu sạch (Data Verification)
 python main.py --verify-db
 ```
 
-### 4. Mo Notebooks de nghien cuu & thu nghiem gia thuyet
+### 4. Mở Notebooks để nghiên cứu & thử nghiệm giả thuyết
 ```bash
 jupyter notebook
 ```
-- Mo cac notebook trong thu muc `notebook/` de tham khao qua trinh phan tich du lieu va xay dung mo hinh.
+- Mở các notebook trong thư mục `notebook/` để tham khảo quá trình phân tích dữ liệu và xây dựng mô hình.
 
 ---
 
-## 9. Mot so bieu do phan tich tieu bieu
+## 9. Một số biểu đồ phân tích tiêu biểu
 
-Cac bieu do va tai lieu phan tich chi tiet nam trong thu muc [`report/`](report/) (gom [`report/business/`](report/business/README.md) & [`report/ml/`](report/ml/README.md)):
+Các biểu đồ và tài liệu phân tích chi tiết nằm trong thư mục [`report/`](report/) (gồm [`report/business/`](report/business/README.md) & [`report/ml/`](report/ml/README.md)):
 
-| Xu huong doanh thu hang thang | Phan tich Pareto 80/20 |
+| Xu hướng doanh thu hàng tháng | Phân tích Pareto 80/20 |
 | :---: | :---: |
 | ![Monthly Revenue](report/business/images/monthly_revenue_trend.png) | ![Pareto](report/business/images/pareto_analysis.png) |
 
-| Ty le giao hang tre | Muc do quan trong dac trung (ML) |
+| Tỷ lệ giao hàng trễ | Mức độ quan trọng đặc trưng (ML) |
 | :---: | :---: |
 | ![Late Delivery](report/business/images/Late%20Delivery%20Percentage.png) | ![Feature Importance](report/ml/images/rf_top15_feature_importance.png) |
 
 ---
 
-## Tac gia
+## Tác giả
 - **Author**: Minh Doan ([doanquangminh14](https://github.com/doanquangminh14))

@@ -1,134 +1,134 @@
-# Bao Cao Phan Tich Chuyen Sau Ve Kinh Doanh (Business Insights)
+# Báo Cáo Phân Tích Chuyên Sâu Về Kinh Doanh (Business Insights)
 
-Thu muc nay tong hop cac bieu do truc quan hoa va bao cao phan tich chuyen sau duoc trich xuat tu qua trinh kham pha du lieu (EDA) trong [`notebook/eda_123.ipynb`](../../notebook/eda_123.ipynb) va [`notebook/eda_456.ipynb`](../../notebook/eda_456.ipynb) tren bo du lieu thuong mai dien tu Olist (Brazil).
-
----
-
-## Muc Luc
-1. [Xu Huong Doanh Thu & Don Hang](#1-xu-huong-doanh-thu--don-hang-revenue--orders-trend)
-2. [Phan Phoi & Phat Hien Di Biet Doanh Thu](#2-phan-phoi--phat-hien-di-biet-doanh-thu-revenue-distribution--outliers)
-3. [Phan Tich Dia Ly & Khach Hang](#3-phan-tich-dia-ly--hanh-vi-khach-hang-customer--geographic-analysis)
-4. [Phan Tich Danh Muc San Pham & Nguyen Ly Pareto 80/20](#4-phan-tich-danh-muc-san-pham--nguyen-ly-pareto-8020)
-5. [Van Chuyen, Logistics & Do Hai Long Khach Hang](#5-van-chuyen-logistics--do-hai-long-khach-hang)
-6. [Ma Tran Tuong Quan Da Bien](#6-ma-tran-tuong-quan-da-bien-correlation-matrix)
-7. [De Xuat & Khuyen Nghi Chien Luoc Kinh Doanh](#7-de-xuat--khuyen-nghi-chien-luoc-kinh-doanh)
+Thư mục này tổng hợp các biểu đồ trực quan hóa và báo cáo phân tích chuyên sâu được trích xuất từ quá trình khám phá dữ liệu (EDA) trong [`notebook/eda_123.ipynb`](../../notebook/eda_123.ipynb) và [`notebook/eda_456.ipynb`](../../notebook/eda_456.ipynb) trên bộ dữ liệu thương mại điện tử Olist (Brazil).
 
 ---
 
-## 1. Xu Huong Doanh Thu & Don Hang (Revenue & Orders Trend)
+## Mục Lục
+1. [Xu Hướng Doanh Thu & Đơn Hàng](#1-xu-hướng-doanh-thu--đơn-hàng-revenue--orders-trend)
+2. [Phân Phối & Phát Hiện Dị Biệt Doanh Thu](#2-phân-phối--phát-hiện-dị-biệt-doanh-thu-revenue-distribution--outliers)
+3. [Phân Tích Địa Lý & Khách Hàng](#3-phân-tích-địa-lý--hành-vi-khách-hàng-customer--geographic-analysis)
+4. [Phân Tích Danh Mục Sản Phẩm & Nguyên Lý Pareto 80/20](#4-phân-tích-danh-mục-sản-phẩm--nguyên-lý-pareto-8020)
+5. [Vận Chuyển, Logistics & Độ Hài Lòng Khách Hàng](#5-vận-chuyển-logistics--độ-hài-lòng-khách-hàng)
+6. [Ma Trận Tương Quan Đa Biến](#6-ma-trận-tương-quan-đa-biến-correlation-matrix)
+7. [Đề Xuất & Khuyến Nghị Chiến Lược Kinh Doanh](#7-đề-xuất--khuyến-nghị-chiến-lược-kinh-doanh)
 
-### Tang truong doanh thu va so luong don theo thang
+---
 
-| Xu Huong Doanh Thu Hang Thang | Xu Huong Don Hang Hang Thang |
+## 1. Xu Hướng Doanh Thu & Đơn Hàng (Revenue & Orders Trend)
+
+### Tăng trưởng doanh thu và số lượng đơn theo tháng
+
+| Xu Hướng Doanh Thu Hàng Tháng | Xu Hướng Đơn Hàng Hàng Tháng |
 | :---: | :---: |
 | ![Monthly Revenue Trend](images/monthly_revenue_trend.png) | ![Monthly Orders Trend](images/monthly_orders_trend.png) |
 
-### Insights Chinh:
-- **Tang truong vuot bac**: Giai doan tu cuoi nam 2016 den giua nam 2018 ghi nhan toc do tang truong lien tuc ve ca GMV (Gross Merchandise Value) va so luong don hang.
-- **Dinh cao Black Friday**: Thang 11/2017 chung kien su bung no manh me ve doanh thu va luong dat hang nho hieu ung Black Friday.
-- **Duy tri on dinh trong nam 2018**: Dau nam 2018 (Quy 1 & Quy 2), doanh thu duy tri o muc cao tren 1 trieu BRL/thang voi trung binh ~6.500 - 7.000 don hang moi thang.
+### Insights Chính:
+- **Tăng trưởng vượt bậc**: Giai đoạn từ cuối năm 2016 đến giữa năm 2018 ghi nhận tốc độ tăng trưởng liên tục về cả GMV (Gross Merchandise Value) và số lượng đơn hàng.
+- **Đỉnh cao Black Friday**: Tháng 11/2017 chứng kiến sự bùng nổ mạnh mẽ về doanh thu và lượng đặt hàng nhờ hiệu ứng Black Friday.
+- **Duy trì ổn định trong năm 2018**: Đầu năm 2018 (Quý 1 & Quý 2), doanh thu duy trì ở mức cao trên 1 triệu BRL/tháng với trung bình ~6.500 - 7.000 đơn hàng mỗi tháng.
 
 ---
 
-## 2. Phan Phoi & Phat Hien Di Biet Doanh Thu (Revenue Distribution & Outliers)
+## 2. Phân Phối & Phát Hiện Dị Biệt Doanh Thu (Revenue Distribution & Outliers)
 
-| Phan Phoi Doanh Thu (Histogram & KDE) | Phat Hien Di Biet Doanh Thu (Boxplot) |
+| Phân Phối Doanh Thu (Histogram & KDE) | Phát Hiện Dị Biệt Doanh Thu (Boxplot) |
 | :---: | :---: |
 | ![Revenue Distribution](images/revenue_distribution_histogram.png) | ![Revenue Outlier Detection](images/revenue_outlier_detection.png) |
 
-### Insights Chinh:
-- **Phan phoi lech phai manh (Right-skewed)**: Phan lon cac giao dich co gia tri don hang tu thap den trung binh (duoi 200 BRL).
-- **Diem di biet (Outliers)**: Xuat hien mot so it giao dich co gia tri rat lon (len toi hang nghin BRL), chu yeu thuoc cac danh muc thiet bi cong nghe cao, may tinh hoac dat hang so luong lon (B2B/si).
+### Insights Chính:
+- **Phân phối lệch phải mạnh (Right-skewed)**: Phần lớn các giao dịch có giá trị đơn hàng từ thấp đến trung bình (dưới 200 BRL).
+- **Điểm dị biệt (Outliers)**: Xuất hiện một số ít giao dịch có giá trị rất lớn (lên tới hàng nghìn BRL), chủ yếu thuộc các danh mục thiết bị công nghệ cao, máy tính hoặc đặt hàng số lượng lớn (B2B/sỉ).
 
 ---
 
-## 3. Phan Tich Dia Ly & Hanh Vi Khach Hang (Customer & Geographic Analysis)
+## 3. Phân Tích Địa Lý & Hành Vi Khách Hàng (Customer & Geographic Analysis)
 
-### Phan bo khach hang theo bang & Hanh vi chi tieu
+### Phân bổ khách hàng theo bang & Hành vi chi tiêu
 
-| Phan Bo Khach Hang Theo Bang (Top States) | Nhan Dien Di Biet Chi Tieu Khach Hang |
+| Phân Bố Khách Hàng Theo Bang (Top States) | Nhận Diện Dị Biệt Chi Tiêu Khách Hàng |
 | :---: | :---: |
 | ![Customer Distribution by State](images/customer_distribution_by_state.png) | ![Customer Spending Outliers](images/customer_spending_outlier_detection.png) |
 
-| Top 20 Khach Hang Chi Tieu Cao Nhat | Top 20 Khach Hang Dat Nhieu Don Nhat |
+| Top 20 Khách Hàng Chi Tiêu Cao Nhất | Top 20 Khách Hàng Đặt Nhiều Đơn Nhất |
 | :---: | :---: |
 | ![Top 20 Spending](images/top_20_customers_by_spending.png) | ![Top 20 Orders](images/top_20_customers_by_orders.png) |
 
-### Insights Chinh:
-- **Tap trung vung Dong Nam (Southeast Region)**: Bang **São Paulo (SP)** chiem hon 40% tong luong khach hang cua nen tang, tiep theo la Rio de Janeiro (RJ), Minas Gerais (MG) va Rio Grande do Sul (RS).
-- **Hanh vi mua sam**: Da so nguoi tieu dung ca nhan chi dat 1 don hang tren san (ty le mua lai thap), cho thay nen tang can cai thien chien luoc Retention va Loyalty Program.
-- **Khach hang VIP / Chi tieu khung**: Mot so khach hang chi tieu vuot troi tu 5.000 den hon 13.000 BRL cho cac don hang dac thu.
+### Insights Chính:
+- **Tập trung vùng Đông Nam (Southeast Region)**: Bang **São Paulo (SP)** chiếm hơn 40% tổng lượng khách hàng của nền tảng, tiếp theo là Rio de Janeiro (RJ), Minas Gerais (MG) và Rio Grande do Sul (RS).
+- **Hành vi mua sắm**: Đa số người tiêu dùng cá nhân chỉ đặt 1 đơn hàng trên sàn (tỷ lệ mua lại thấp), cho thấy nền tảng cần cải thiện chiến lược Retention và chương trình khách hàng thân thiết.
+- **Khách hàng VIP / Chi tiêu lớn**: Một số khách hàng chi tiêu vượt trội từ 5.000 đến hơn 13.000 BRL cho các đơn hàng đặc thù.
 
 ---
 
-## 4. Phan Tich Danh Muc San Pham & Nguyen Ly Pareto 80/20
+## 4. Phân Tích Danh Mục Sản Phẩm & Nguyên Lý Pareto 80/20
 
-### Top Danh Muc San Pham & Phan Tich Ty Trong
+### Top Danh Mục Sản Phẩm & Phân Tích Tỷ Trọng
 
-| Top 10 Danh Muc Theo Doanh Thu | Top 10 Danh Muc Theo San Luong Ban |
+| Top 10 Danh Mục Theo Doanh Thu | Top 10 Danh Mục Theo Sản Lượng Bán |
 | :---: | :---: |
 | ![Top Categories Revenue](images/top_10_categories_by_revenue.png) | ![Top Categories Sales](images/top_10_categories_by_sales_volume.png) |
 
-| Phan Tich Nguyen Ly Pareto 80/20 | Treemap Ty Trong Doanh Thu Danh Muc |
+| Phân Tích Nguyên Lý Pareto 80/20 | Treemap Tỷ Trọng Doanh Thu Danh Mục |
 | :---: | :---: |
 | ![Pareto Analysis](images/pareto_analysis.png) | ![Treemap Revenue](images/top_categories_revenue_treemap.png) |
 
-| Phat Hien Di Biet Theo Danh Muc San Pham |
+| Phát Hiện Dị Biệt Theo Danh Mục Sản Phẩm |
 | :---: |
 | ![Category Revenue Outliers](images/category_revenue_outliers.png) |
 
-### Insights Chinh:
-- **Nguyen ly Pareto 80/20 duoc kiem chung ro net**: Khoang **20% so danh muc san pham hang dau dong gop hon 80% tong doanh thu** cho toan san.
-- **Top Danh muc dan dau GMV**:
-  1. `beleza_saude` (Suc khoe & Sac dep)
-  2. `relogios_presentes` (Dong ho & Qua tang)
-  3. `cama_mesa_banho` (Noi that phong ngu - Ga trai giuong)
-  4. `esporte_lazer` (The thao & Da ngoai)
-  5. `informatica_acessorios` (Thiet bi tin hoc & Phu kien may tinh)
-- **Top Danh muc theo san luong**: `cama_mesa_banho` va `beleza_saude` la hai nganh hang co khoi luong tieu thu cao nhat.
+### Insights Chính:
+- **Nguyên lý Pareto 80/20 được kiểm chứng rõ nét**: Khoảng **20% số danh mục sản phẩm hàng đầu đóng góp hơn 80% tổng doanh thu** cho toàn sàn.
+- **Top Danh mục dẫn đầu GMV**:
+  1. `beleza_saude` (Sức khỏe & Sắc đẹp)
+  2. `relogios_presentes` (Đồng hồ & Quà tặng)
+  3. `cama_mesa_banho` (Nội thất phòng ngủ - Ga trải giường)
+  4. `esporte_lazer` (Thể thao & Dã ngoại)
+  5. `informatica_acessorios` (Thiết bị tin học & Phụ kiện máy tính)
+- **Top Danh mục theo sản lượng**: `cama_mesa_banho` và `beleza_saude` là hai ngành hàng có khối lượng tiêu thụ cao nhất.
 
 ---
 
-## 5. Van Chuyen, Logistics & Do Hai Long Khach Hang
+## 5. Vận Chuyển, Logistics & Độ Hài Lòng Khách Hàng
 
-### Danh gia dich vu giao van va trai nghiem nguoi dung
+### Đánh giá dịch vụ giao vận và trải nghiệm người dùng
 
-| Ty Le Giao Hang Tre (Late Delivery Rate) | Phan Nhom Thoi Gian Giao Hang (Delivery Buckets) |
+| Tỷ Lệ Giao Hàng Trễ (Late Delivery Rate) | Phân Nhóm Thời Gian Giao Hàng (Delivery Buckets) |
 | :---: | :---: |
 | ![Late Delivery Percentage](images/Late%20Delivery%20Percentage.png) | ![Delivery Time Categories](images/Delivery%20Time%20Categories.png) |
 
-| Phan Phoi Diem Danh Gia Review (1 - 5 Sao) | Top 10 Danh Muc Duoc Danh Gia Nhieu Nhat |
+| Phân Phối Điểm Đánh Giá Review (1 - 5 Sao) | Top 10 Danh Mục Được Đánh Giá Nhiều Nhất |
 | :---: | :---: |
 | ![Review Score Distribution](images/Review%20Score%20Distribution.png) | ![Top 10 Most Reviewed Categories](images/Top%2010%20Most%20Reviewed%20Categories.png) |
 
-### Insights Chinh:
-- **Phan lon don hang giao dung han**: Khoang ~92% don hang duoc giao dung hoac som hon ngay du kien (`estimated_delivery_date`).
-- **Giao tre la yeu to lam giam manh diem danh gia**: Khi don hang bi giao tre, ty le danh gia **1 sao va 2 sao tang vot len tren 70%**. Nguoc lai, don giao dung han dat diem trung binh 4.2 - 4.6 sao.
-- **Thoi gian giao hang trung binh**: Da so don hang noi vung São Paulo duoc giao trong vong 5-10 ngay, trong khi cac bang vung sau vung xa (Bac/Dong Bac Brazil) co the mat tu 20-30 ngay.
+### Insights Chính:
+- **Phần lớn đơn hàng giao đúng hạn**: Khoảng ~92% đơn hàng được giao đúng hoặc sớm hơn ngày dự kiến (`estimated_delivery_date`).
+- **Giao trễ là yếu tố làm giảm mạnh điểm đánh giá**: Khi đơn hàng bị giao trễ, tỷ lệ đánh giá **1 sao và 2 sao tăng vọt lên trên 70%**. Ngược lại, đơn giao đúng hạn đạt điểm trung bình 4.2 - 4.6 sao.
+- **Thời gian giao hàng trung bình**: Đa số đơn hàng nội vùng São Paulo được giao trong vòng 5-10 ngày, trong khi các bang vùng sâu vùng xa (Bắc/Đông Bắc Brazil) có thể mất từ 20-30 ngày.
 
 ---
 
-## 6. Ma Tran Tuong Quan Da Bien (Correlation Matrix)
+## 6. Ma Trận Tương Quan Đa Biến (Correlation Matrix)
 
-| Bieu Do Ma Tran Tuong Quan (Correlation Heatmap) |
+| Biểu Đồ Ma Trận Tương Quan (Correlation Heatmap) |
 | :---: |
 | ![Correlation Heatmap](images/Correlation_Heatmap.png) |
 
-### Insights Chinh:
-- **Tuong quan manh giua cuoc phi (`freight_value`) va khoang cach dia ly / khoi luong san pham**.
-- **Tuong quan am giua thoi gian giao hang (`delivery_days`) va diem danh gia (`review_score`)**: Thoi gian giao hang cang keo dai, diem review cang giam ro ret.
-- **Moi quan he giua gia san pham va gia tri thanh toan**: Gia san pham quyet dinh phan lon tong hoa don, phi ship chiem trung binh 15-25% gia tri don hang.
+### Insights Chính:
+- **Tương quan mạnh giữa cước phí (`freight_value`) và khoảng cách địa lý / khối lượng sản phẩm**.
+- **Tương quan âm giữa thời gian giao hàng (`delivery_days`) và điểm đánh giá (`review_score`)**: Thời gian giao hàng càng kéo dài, điểm review càng giảm rõ rệt.
+- **Mối quan hệ giữa giá sản phẩm và giá trị thanh toán**: Giá sản phẩm quyết định phần lớn tổng hóa đơn, phí ship chiếm trung bình 15-25% giá trị đơn hàng.
 
 ---
 
-## 7. De Xuat & Khuyen Nghi Chien Luoc Kinh Doanh
+## 7. Đề Xuất & Khuyến Nghị Chiến Lược Kinh Doanh
 
-1. **Toi uu hoa Mang luoi Logistics & Kho van (Fulfillment Centers)**:
-   - Thanh lap cac hub kho bai ve tinh tai Dong Nam va Nam Brazil de rut ngan thoi gian giao hang chang cuoi (Last-mile Delivery).
-   - Tu dong hoa he thong canh bao don hang co nguy co cham tre de thong bao chu dong cho khach hang truoc khi phat sinh khieu nai.
-2. **Chien luoc Quan ly Danh Muc San Pham (Category Management)**:
-   - Uu tien nguon luc marketing, tro gia va hop tac voi cac nha ban hang (sellers) thuoc top 20% danh muc cot loi (Suc khoe, Sac dep, Noi that, Dong ho, Phu kien IT).
-   - Kiem soat chat luong san pham doi voi cac nganh hang co ty le danh gia 1 sao cao.
-3. **Chien Luoc Tang Ty Le Mua Lai (Customer Retention & Re-engagement)**:
-   - Thiet lap chuong trinh hoi vien (Loyalty/Cashback) va ca nhan hoa chien dich Email/Voucher dua tren lich su mua sam.
-   - Thuc day chinh sach mien phi van chuyen (Free Shipping) theo gia tri don hang toi thieu tai khu vuc trong diem São Paulo.
+1. **Tối ưu hóa Mạng lưới Logistics & Kho vận (Fulfillment Centers)**:
+   - Thành lập các hub kho bãi vệ tinh tại Đông Nam và Nam Brazil để rút ngắn thời gian giao hàng chặng cuối (Last-mile Delivery).
+   - Tự động hóa hệ thống cảnh báo đơn hàng có nguy cơ chậm trễ để thông báo chủ động cho khách hàng trước khi phát sinh khiếu nại.
+2. **Chiến lược Quản lý Danh Mục Sản Phẩm (Category Management)**:
+   - Ưu tiên nguồn lực marketing, trợ giá và hợp tác với các nhà bán hàng (sellers) thuộc top 20% danh mục cốt lõi (Sức khỏe, Sắc đẹp, Nội thất, Đồng hồ, Phụ kiện IT).
+   - Kiểm soát chất lượng sản phẩm đối với các ngành hàng có tỷ lệ đánh giá 1 sao cao.
+3. **Chiến Lược Tăng Tỷ Lệ Mua Lại (Customer Retention & Re-engagement)**:
+   - Thiết lập chương trình hội viên (Loyalty/Cashback) và cá nhân hóa chiến dịch Email/Voucher dựa trên lịch sử mua sắm.
+   - Thúc đẩy chính sách miễn phí vận chuyển (Free Shipping) theo giá trị đơn hàng tối thiểu tại khu vực trọng điểm São Paulo.
