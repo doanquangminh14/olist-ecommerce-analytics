@@ -63,15 +63,13 @@ LEFT JOIN staging.category_translation ct
 CREATE OR REPLACE VIEW analytics.dim_geolocation AS
 SELECT
     geolocation_zip_code_prefix,
-    geolocation_city,
-    geolocation_state,
+    MAX(geolocation_city) AS geolocation_city,
+    MAX(geolocation_state) AS geolocation_state,
     ROUND(AVG(geolocation_lat)::numeric, 6) AS latitude,
     ROUND(AVG(geolocation_lng)::numeric, 6) AS longitude
 FROM staging.geolocation
 GROUP BY
-    geolocation_zip_code_prefix,
-    geolocation_city,
-    geolocation_state;
+    geolocation_zip_code_prefix;
 
 -- 1.5 DIM_DATE: Chiều thời gian (Time Intelligence cho Power BI)
 CREATE OR REPLACE VIEW analytics.dim_date AS
